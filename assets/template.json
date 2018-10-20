@@ -1,0 +1,28 @@
+{
+    "active_meals": [
+        {
+            "name": "meal name",
+            "ingredients": [
+                {
+                    "ingredient": "name",
+                    "required_amount": "<number>",
+                    "unit": "oz",
+                    "acquired": true 
+                }
+            ]
+        }
+    ],
+    "saved_meals": [
+        {
+            "name": "meal name",
+            "ingredients": [
+                {
+                    "ingredient": "name",
+                    "required_amount": "<number>",
+                    "unit": "oz"
+                }
+            ]
+
+        }
+    ]
+}

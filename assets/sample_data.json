@@ -1,0 +1,78 @@
+{
+    "active_meals": [
+        {
+            "id": "active 1",
+            "name": "Massaman Curry",
+            "ingredients": [
+                {
+                    "id": "1",
+                    "name": "item 1",
+                    "required_amount": "2",
+                    "unit": "oz",
+                    "acquired": false 
+                },
+                {
+                    "id": "2",
+                    "name": "name 2",
+                    "required_amount": "4",
+                    "unit": "cups",
+                    "acquired": true 
+                },
+                {
+                    "id": "3",
+                    "name": "name 3",
+                    "required_amount": "1",
+                    "unit": "tsp",
+                    "acquired": false 
+                }
+            ]
+        }
+    ],
+    "saved_meals": [
+        {
+            "name": "Massaman Curry",
+            "ingredients": [
+                {
+                    "name": "item 1",
+                    "required_amount": "2",
+                    "unit": "oz"
+                },
+                {
+                    "name": "name 2",
+                    "required_amount": "4",
+                    "unit": "cups"
+                },
+                {
+                    "name": "name 3",
+                    "required_amount": "1",
+                    "unit": "tsp"
+                }
+            ]
+        },
+        {
+            "name": "Salad",
+            "ingredients": [
+                {
+                    "name": "item 1",
+                    "required_amount": "5",
+                    "unit": "oz"
+                },
+                {
+                    "name": "name 4",
+                    "required_amount": "4",
+                    "unit": "pounds"
+                },
+                {
+                    "name": "name 5",
+                    "required_amount": "3",
+                    "unit": "tsp"
+                },
+                {
+                    "name": "name 3",
+                    "required_amount": "1",
+                    "unit": "bricks"
+                }
+            ]
+        }
+    ]
+}
