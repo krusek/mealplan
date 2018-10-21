@@ -26,9 +26,6 @@ class DatabaseBloc {
     final result = json.decode(data);
     _activeMeals = result['active_meals'].map((item) { return ActiveMeal.fromJson(item); }).cast<ActiveMeal>().toList();
     _savedMeals = result['saved_meals'].map((item) { return SavedMeal.fromJson(item); }).cast<SavedMeal>().toList();
-    print("active count: ${_activeMeals.length}");
-    print("active meal: ${_activeMeals[0]}");
-    print("active ingredients: ${_activeMeals[0].ingredients.length}");
     this.activateMeal(_savedMeals[1]);
     this.activateMeal(_savedMeals[0]);
   }
@@ -52,6 +49,11 @@ class DatabaseBloc {
     final ingredient = _activeMeals.expand((meal) => meal.ingredients).firstWhere((ingredient) => ingredient.id == id);
     ingredient?.acquired = value;
     _ingredientChanges.add(ingredient);
+  }
+
+  void removeActiveMeal(ActiveMeal meal) {
+    _activeMeals.remove(meal);
+    _activeMealsChanges.add(_activeMeals);
   }
 
   List<ActiveMeal> get activeMeals => _activeMeals;

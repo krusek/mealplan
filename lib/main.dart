@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/database.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
+import 'package:mealplan/ui/meal_plan.dart';
 import 'package:mealplan/ui/splash.dart';
 
 void main() => runApp(new MyApp());
@@ -17,25 +18,40 @@ class MyApp extends StatelessWidget {
       color: Colors.blue,
       routes: {
         "/": (context) => Splash(),
-        "/home/": (context) => MyHomePage(),
+        "/home/": (context) => HomeScaffold(child: MyHomePage()),
+        "/saved_meals/": (context) => HomeScaffold(child: SavedMealsWidget(), showActions: false,),
       },
-      builder: (context, navigator) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("Meal plan"),
-            backgroundColor: Colors.blue,
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/saved_meals/");
-                },
-                child: Text("Meals"),
-              )
-            ],
-          ),
-          body: DatabaseWidget(child: navigator),
-        );
+      builder: (ctx, navigator) {
+        return DatabaseWidget(child: navigator);
       },
+    );
+  }
+}
+
+class HomeScaffold extends StatelessWidget {
+  final Widget child;
+  final bool showActions;
+  const HomeScaffold({
+    Key key, this.child, this.showActions = true,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final actions = <Widget>[
+      FlatButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed("/saved_meals/");
+        },
+        child: Text("Meals", style: TextStyle(color: Colors.white),),
+      ),
+    ];
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Meal plan"),
+        backgroundColor: Colors.blue,
+        actions: this.showActions ? actions : [],
+      ),
+      body: this.child,
     );
   }
 }
@@ -45,7 +61,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final database = DatabaseWidget.of(context);
     return SingleChildScrollView(
-          child: Column(
+      child: Column(
         children: database.activeMeals.map((meal) { return ActiveMealWidget(activeMeal: meal); }).toList(),
       ),
     );

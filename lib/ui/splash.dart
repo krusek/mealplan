@@ -28,11 +28,15 @@ class _SplashState extends State<Splash> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    if (context == null) { return; }
     List<Future> futures = List();
 
     futures.add(Future.delayed(Duration(seconds: 1)));
     futures.add(DatabaseWidget.of(context).loader(context));
 
-    Future.wait(futures).then((_) => Navigator.of(context).pushReplacementNamed("/home/"));
+    Future.wait(futures).then((_) {
+      if (context == null) { return; }
+      Navigator.of(context).pushReplacementNamed("/home/"); 
+    });
   }
 }

@@ -13,7 +13,6 @@ class ActiveMealWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = activeMeal.ingredients;
-    print("items count: ${items.length}");
     return Column(
       children: <Widget>[
         new MealTitleWidget(title: activeMeal.name),
@@ -37,8 +36,11 @@ class MealTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: 25.0,
       color: Colors.blueGrey,
-      child: Text(title, style: TextStyle(color: Colors.white),)
+      child: Center(
+        child: Text(title, style: TextStyle(color: Colors.white),)
+      )
     );
   }
 }
