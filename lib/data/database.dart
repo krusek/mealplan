@@ -30,8 +30,8 @@ class DatabaseBloc {
     this.activateMeal(_savedMeals[0]);
   }
 
-  final _ingredientChanges = BehaviorSubject<ActiveIngredient>();
-  final _activeMealsChanges = BehaviorSubject<List<ActiveMeal>>();
+  final _ingredientChanges = PublishSubject<ActiveIngredient>();
+  final _activeMealsChanges = PublishSubject<List<ActiveMeal>>();
 
   Stream<List<ActiveMeal>> get activeMealaStream => _activeMealsChanges.stream;
 

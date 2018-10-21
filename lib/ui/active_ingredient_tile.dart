@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database.dart';
@@ -15,13 +17,18 @@ class ActiveIngredientTile extends StatefulWidget {
 }
 
 class ActiveIngredientTileState extends State<ActiveIngredientTile> {
+  StreamSubscription<ActiveIngredient> subscription;
+  ActiveIngredientTileState();
   @override
   Widget build(BuildContext context) {
     final database = DatabaseWidget.of(context);
     final ingredient = this.widget._ingredient;
-    database.ingredientStream(ingredient).listen((_) {
-      setState((){});
-    });
+    if (this.subscription == null) {
+      this.subscription =  database.ingredientStream(ingredient).listen((_) {
+        print("update subscription: ${ingredient.id}");
+        setState((){});
+      });
+    }
     return ListTile(
       onTap: () {
         database.toggle(id: ingredient.id, value: !ingredient.acquired);
@@ -42,4 +49,20 @@ class ActiveIngredientTileState extends State<ActiveIngredientTile> {
       },)
     );
   }
+
+  @override
+    void didUpdateWidget(ActiveIngredientTile oldWidget) {
+      // TODO: implement didUpdateWidget
+      super.didUpdateWidget(oldWidget);
+      this.subscription.cancel();
+      this.subscription = null;
+    }
+
+  @override
+    void dispose() {
+      print("unsubscribe: ${this.widget._ingredient.id}");
+      this.subscription.cancel();
+      this.subscription = null;
+      super.dispose();
+    }
 }

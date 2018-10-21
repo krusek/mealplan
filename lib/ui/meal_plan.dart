@@ -7,7 +7,6 @@ import 'package:mealplan/ui/active_meal_widget.dart';
 class SavedMealsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseWidget.of(context);
     return Column(
       children: [
         ActiveMealsWidget(),
