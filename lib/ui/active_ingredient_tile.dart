@@ -21,7 +21,7 @@ class ActiveIngredientTileState extends State<ActiveIngredientTile> {
   ActiveIngredientTileState();
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseWidget.of(context);
+    final database = DatabaseProvider.of(context);
     final ingredient = this.widget._ingredient;
     if (this.subscription == null) {
       this.subscription =  database.ingredientStream(ingredient).listen((_) {

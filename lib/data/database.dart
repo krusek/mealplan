@@ -5,16 +5,37 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
-class DatabaseWidget extends InheritedWidget {
-  final _bloc = DatabaseBloc();
-  DatabaseWidget({Widget child}): super(child: child);
+class _DatabaseWidget extends InheritedWidget {
+  final DatabaseBloc _bloc;
+  _DatabaseWidget({Widget child, DatabaseBloc bloc}): this._bloc = bloc ?? DatabaseBloc(), super(child: child);
 
   static DatabaseBloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(DatabaseWidget) as DatabaseWidget)._bloc;
+    return (context.inheritFromWidgetOfExactType(_DatabaseWidget) as _DatabaseWidget)._bloc;
   }
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
+}
+
+class DatabaseProvider extends StatefulWidget {
+  final Widget child;
+  DatabaseProvider({Key key, this.child}) : super(key: key);
+  @override
+  DatabaseProviderState createState() {
+    return new DatabaseProviderState();
+  }
+
+  static DatabaseBloc of(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(_DatabaseWidget) as _DatabaseWidget)._bloc;
+  }
+}
+
+class DatabaseProviderState extends State<DatabaseProvider> {
+  final DatabaseBloc bloc = DatabaseBloc();
+  @override
+  Widget build(BuildContext context) {
+    return _DatabaseWidget(bloc: this.bloc, child: this.widget.child);
+  }
 }
 
 class DatabaseBloc {
@@ -46,7 +67,9 @@ class DatabaseBloc {
   }
 
   void toggle({String id, bool value}) {
-    final ingredient = _activeMeals.expand((meal) => meal.ingredients).firstWhere((ingredient) => ingredient.id == id);
+    print("toggle: $id");
+    print("activemeal count: ${_activeMeals.length}");
+    final ingredient = _activeMeals.expand((meal) => meal.ingredients).firstWhere((ingredient) => ingredient.id == id, orElse: () => null);
     ingredient?.acquired = value;
     _ingredientChanges.add(ingredient);
   }
@@ -60,6 +83,7 @@ class DatabaseBloc {
   List<SavedMeal> get savedMeals => _savedMeals;
 
   void dispose() {
+    print("dispose");
     _ingredientChanges.close();
   }
 

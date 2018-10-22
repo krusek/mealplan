@@ -18,7 +18,7 @@ class SavedMealsWidget extends StatelessWidget {
 class ActiveMealsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseWidget.of(context);
+    final database = DatabaseProvider.of(context);
     return Column(
       children: [
         MealTitleWidget(title: "Active Meals"),
