@@ -53,8 +53,10 @@ class DatabaseBloc {
 
   final _ingredientChanges = PublishSubject<ActiveIngredient>();
   final _activeMealsChanges = PublishSubject<List<ActiveMeal>>();
+  final _savedMealsChanges = PublishSubject<List<SavedMeal>>();
 
   Stream<List<ActiveMeal>> get activeMealaStream => _activeMealsChanges.stream;
+  Stream<List<SavedMeal>> get savedMealsStream => _savedMealsChanges.stream;
 
   Stream<ActiveIngredient> ingredientStream(ActiveIngredient ingredient) {
     return _ingredientChanges.stream.where((active) { return active.id == ingredient.id; });

@@ -10,9 +10,39 @@ class SavedMealsWidget extends StatelessWidget {
     return Column(
       children: [
         ActiveMealsWidget(),
+        SavedMealsListWidget(),
       ]
     );
   }
+}
+
+class SavedMealsListWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final database = DatabaseProvider.of(context);
+    return Column(
+      children: [
+        MealTitleWidget(title: "Saved Meals"),
+        StreamBuilder<List<SavedMeal>>(
+          initialData: database.savedMeals,
+          stream: database.savedMealsStream,
+          builder: (context, snapshot) {
+            return Column(
+              children: snapshot.data.map((meal) {
+                return ListTile(
+                  title: Text(meal.name),
+                  onTap: () {
+                    database.activateMeal(meal);
+                  }
+                );
+              }).toList(),
+            );
+          }
+        ),
+      ]
+    );
+  }
+
 }
 
 class ActiveMealsWidget extends StatelessWidget {
@@ -26,22 +56,32 @@ class ActiveMealsWidget extends StatelessWidget {
           initialData: database.activeMeals,
           stream: database.activeMealaStream,
           builder: (context, snapshot) {
-            return Column(
-              children: snapshot.data.map((meal) {
-                return ListTile(
-                  title: Text(meal.name),
-                  trailing: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      database.removeActiveMeal(meal);
-                    },
-                  ),
-                );
-              }).toList()
-            );
+            final list = snapshot.data;
+            if (list.length > 0) {
+              return _mealsColumn(context, list);
+            } else {
+              return ListTile(title: Text("No active meals"));
+            }
           }
         ),
       ]
+    );
+  }
+
+  Widget _mealsColumn(BuildContext context, List<ActiveMeal> meals) {
+    final database = DatabaseProvider.of(context);
+    return Column(
+      children: meals.map((meal) {
+        return ListTile(
+          title: Text(meal.name),
+          trailing: IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              database.removeActiveMeal(meal);
+            },
+          ),
+        );
+      }).toList()
     );
   }
 }
