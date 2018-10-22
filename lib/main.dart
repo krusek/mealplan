@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/database.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
+import 'package:mealplan/ui/create_meal.dart';
 import 'package:mealplan/ui/meal_plan.dart';
 import 'package:mealplan/ui/splash.dart';
 
@@ -20,8 +21,15 @@ class MyApp extends StatelessWidget {
       color: Colors.blue,
       routes: {
         "/": (context) => Splash(),
-        "/home/": (context) => HomeScaffold(child: MyHomePage(DatabaseProvider.of(context).activeMeals)),
-        "/saved_meals/": (context) => HomeScaffold(child: SavedMealsWidget(), showActions: false,),
+        "/home/": (context) => HomeScaffold(
+          child: MyHomePage(DatabaseProvider.of(context).activeMeals),
+            actions: MyHomePage.actions(context),
+          ),
+        "/saved_meals/": (context) => HomeScaffold(
+          child: SavedMealsWidget(),
+          actions: SavedMealsWidget.actions(context),
+        ),
+        "/create_saved_meal/": (context) => HomeScaffold(child: CreateWidget(), actions: []),
       },
       builder: (ctx, navigator) {
         return DatabaseProvider(child: navigator);
@@ -32,26 +40,18 @@ class MyApp extends StatelessWidget {
 
 class HomeScaffold extends StatelessWidget {
   final Widget child;
-  final bool showActions;
+  final List<Widget> actions;
   const HomeScaffold({
-    Key key, this.child, this.showActions = true,
+    Key key, this.child, this.actions,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final actions = <Widget>[
-      FlatButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed("/saved_meals/");
-        },
-        child: Text("Meals", style: TextStyle(color: Colors.white),),
-      ),
-    ];
     return Scaffold(
       appBar: AppBar(
         title: Text("Meal plan"),
         backgroundColor: Colors.blue,
-        actions: this.showActions ? actions : [],
+        actions: this.actions,
       ),
       body: this.child,
     );
@@ -77,5 +77,16 @@ class MyHomePage extends StatelessWidget {
         );
       }
     );
+  }
+
+  static List<Widget> actions(BuildContext context) {
+    return [
+      FlatButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed("/saved_meals/");
+        },
+        child: Text("Meals", style: TextStyle(color: Colors.white),),
+      ),
+    ];
   }
 }

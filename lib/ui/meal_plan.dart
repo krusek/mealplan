@@ -14,6 +14,18 @@ class SavedMealsWidget extends StatelessWidget {
       ]
     );
   }
+
+
+  static List<Widget> actions(BuildContext context) {
+    return [
+      FlatButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed("/create_saved_meal/");
+        },
+        child: Text("Create", style: TextStyle(color: Colors.white),),
+      ),
+    ];
+  }
 }
 
 class SavedMealsListWidget extends StatelessWidget {
