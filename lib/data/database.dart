@@ -69,11 +69,16 @@ class DatabaseBloc {
   }
 
   void toggle({String id, bool value}) {
-    print("toggle: $id");
-    print("activemeal count: ${_activeMeals.length}");
     final ingredient = _activeMeals.expand((meal) => meal.ingredients).firstWhere((ingredient) => ingredient.id == id, orElse: () => null);
     ingredient?.acquired = value;
     _ingredientChanges.add(ingredient);
+  }
+
+  void saveMeal(String id, String name, List<MutableIngredient> ingredients) {
+    _savedMeals.removeWhere((meal) => meal.id == id);
+    final saved = SavedMeal(id, name, ingredients);
+    _savedMeals.add(saved);
+    this._savedMealsChanges.add(_savedMeals);
   }
 
   void removeActiveMeal(ActiveMeal meal) {
@@ -85,7 +90,6 @@ class DatabaseBloc {
   List<SavedMeal> get savedMeals => _savedMeals;
 
   void dispose() {
-    print("dispose");
     _ingredientChanges.close();
   }
 
@@ -112,12 +116,15 @@ class ActiveMeal {
 }
 
 class SavedMeal {
+  final String id;
   final String name;
   final List<Ingredient> ingredients;
 
-  SavedMeal(this.name, this.ingredients);
+  SavedMeal(this.id, this.name, List<MutableIngredient> mutable):
+    this.ingredients = mutable.map((ingredient) => Ingredient(name: ingredient.name, requiredAmount: ingredient.requiredAmount, unit: ingredient.unit)).toList();
   SavedMeal.fromJson(Map<String, dynamic> json)
     : name = json["name"],
+      id = json["id"],
       ingredients = json['ingredients'].map((item){ return Ingredient.fromJson(item); }).cast<Ingredient>().toList();
 }
 
@@ -126,7 +133,7 @@ class Ingredient {
   final String requiredAmount;
   final String unit;
 
-  Ingredient(this.name, this.requiredAmount, this.unit);
+  Ingredient({this.name = "", this.requiredAmount = "", this.unit = ""});
   Ingredient.fromJson(Map<String,dynamic> json)
   : name = json['name'],
     requiredAmount = json['required_amount'],
@@ -157,5 +164,26 @@ class ActiveIngredient {
   static List<ActiveIngredient> from(List<dynamic> json) {
     final items = json.map((item){ return ActiveIngredient.fromJson(item); }).cast<ActiveIngredient>().toList();
     return items;
+  }
+}
+
+class MutableIngredient {
+  String id;
+  String name = "";
+  String requiredAmount = "";
+  String unit = "";
+  MutableIngredient(): this.id = Uuid().v1();
+
+  static MutableIngredient from({Ingredient ingredient}) {
+    final mutable = MutableIngredient();
+    mutable.name = ingredient.name;
+    mutable.requiredAmount = ingredient.requiredAmount;
+    mutable.unit = ingredient.unit;
+    return mutable;
+  }
+
+  @override
+  String toString() {
+    return "ingredient: $name for $requiredAmount - $unit";
   }
 }

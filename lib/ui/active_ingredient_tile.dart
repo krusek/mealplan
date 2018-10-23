@@ -25,7 +25,6 @@ class ActiveIngredientTileState extends State<ActiveIngredientTile> {
     final ingredient = this.widget._ingredient;
     if (this.subscription == null) {
       this.subscription =  database.ingredientStream(ingredient).listen((_) {
-        print("update subscription: ${ingredient.id}");
         setState((){});
       });
     }
@@ -60,7 +59,6 @@ class ActiveIngredientTileState extends State<ActiveIngredientTile> {
 
   @override
     void dispose() {
-      print("unsubscribe: ${this.widget._ingredient.id}");
       this.subscription.cancel();
       this.subscription = null;
       super.dispose();

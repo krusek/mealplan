@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
+import 'package:mealplan/ui/create_meal.dart';
 
 class SavedMealsWidget extends StatelessWidget {
   @override
@@ -45,7 +46,19 @@ class SavedMealsListWidget extends StatelessWidget {
                   title: Text(meal.name),
                   onTap: () {
                     database.activateMeal(meal);
-                  }
+                  },
+                  trailing: FlatButton(
+                    child: Text("Edit Meal"),
+                    onPressed: () {
+                      Navigator.push(context, 
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CreateWidget.createScaffold(meal: meal);
+                          }
+                        )
+                      );
+                    }
+                  ),
                 );
               }).toList(),
             );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mealplan/data/database.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
 import 'package:mealplan/ui/create_meal.dart';
+import 'package:mealplan/ui/home_scaffold.dart';
 import 'package:mealplan/ui/meal_plan.dart';
 import 'package:mealplan/ui/splash.dart';
 
@@ -29,31 +30,11 @@ class MyApp extends StatelessWidget {
           child: SavedMealsWidget(),
           actions: SavedMealsWidget.actions(context),
         ),
-        "/create_saved_meal/": (context) => HomeScaffold(child: CreateWidget(), actions: []),
+        "/create_saved_meal/": (context) => CreateWidget.createScaffold(),
       },
       builder: (ctx, navigator) {
         return DatabaseProvider(child: navigator);
       },
-    );
-  }
-}
-
-class HomeScaffold extends StatelessWidget {
-  final Widget child;
-  final List<Widget> actions;
-  const HomeScaffold({
-    Key key, this.child, this.actions,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Meal plan"),
-        backgroundColor: Colors.blue,
-        actions: this.actions,
-      ),
-      body: this.child,
     );
   }
 }

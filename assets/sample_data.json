@@ -30,6 +30,7 @@
     ],
     "saved_meals": [
         {
+            "id": "saved 1",
             "name": "Massaman Curry",
             "ingredients": [
                 {
@@ -51,6 +52,7 @@
         },
         {
             "name": "Salad",
+            "id": "saved 2",
             "ingredients": [
                 {
                     "name": "item 1",
