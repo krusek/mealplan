@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:mealplan/data/database.dart';
+import 'package:mealplan/data/firestore.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -33,6 +34,7 @@ class _SplashState extends State<Splash> {
 
     futures.add(Future.delayed(Duration(seconds: 1)));
     futures.add(DatabaseProvider.of(context).loader(context));
+    futures.add(FirestoreProvider.of(context).loader);
 
     Future.wait(futures).then((_) {
       if (context == null) { return; }

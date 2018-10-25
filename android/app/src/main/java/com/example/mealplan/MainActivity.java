@@ -1,4 +1,4 @@
-package com.example.mealplan;
+package com.korbonix.mealplan;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
