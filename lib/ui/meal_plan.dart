@@ -8,11 +8,13 @@ import 'package:mealplan/ui/create_meal.dart';
 class SavedMealsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ActiveMealsWidget(),
-        SavedMealsListWidget(),
-      ]
+    return SingleChildScrollView(
+        child: Column(
+        children: [
+          ActiveMealsWidget(),
+          SavedMealsListWidget(),
+        ]
+      ),
     );
   }
 
@@ -37,9 +39,10 @@ class SavedMealsListWidget extends StatelessWidget {
       children: [
         MealTitleWidget(title: "Saved Meals"),
         StreamBuilder<List<SavedMeal>>(
-          initialData: database.savedMeals,
+          initialData: [],
           stream: database.savedMealsStream,
           builder: (context, snapshot) {
+            if (snapshot.data == null) { return ListTile(title: Text("No Saved Meals.")); }
             return Column(
               children: snapshot.data.map((meal) {
                 return ListTile(
@@ -78,11 +81,11 @@ class ActiveMealsWidget extends StatelessWidget {
       children: [
         MealTitleWidget(title: "Active Meals"),
         StreamBuilder<List<ActiveMeal>>(
-          initialData: database.activeMeals,
+          initialData: [],
           stream: database.activeMealaStream,
           builder: (context, snapshot) {
             final list = snapshot.data;
-            if (list.length > 0) {
+            if (list != null && list.length > 0) {
               return _mealsColumn(context, list);
             } else {
               return ListTile(title: Text("No active meals"));

@@ -8,7 +8,7 @@ class ActiveIngredientTile extends StatefulWidget {
   final ActiveIngredient _ingredient;
   const ActiveIngredientTile({
     Key key, @required ActiveIngredient ingredient
-  }) : _ingredient = ingredient, super(key: key);
+  }) : _ingredient = ingredient, assert(ingredient != null), super(key: key);
 
   @override
   ActiveIngredientTileState createState() {

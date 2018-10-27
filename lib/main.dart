@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/": (context) => Splash(),
         "/home/": (context) => HomeScaffold(
-          child: MyHomePage(DatabaseProvider.of(context).activeMeals),
+          child: MyHomePage(),
             actions: MyHomePage.actions(context),
           ),
         "/saved_meals/": (context) => HomeScaffold(
@@ -41,20 +41,20 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final List<ActiveMeal> activeMeals;
-  MyHomePage(this.activeMeals);
+  MyHomePage();
   @override
   Widget build(BuildContext context) {
     final database = DatabaseProvider.of(context);
     return StreamBuilder(
-      initialData: this.activeMeals,
+      initialData: [],
       stream: database.activeMealaStream,
       builder: (context, data) {
+        if (data.data == null) return Text("Loading");
         return SingleChildScrollView(
           child: Column(
-            children: activeMeals.map((meal) { 
+            children: data.data.map((meal) { 
               return ActiveMealWidget(activeMeal: meal); 
-            }).toList()
+            }).toList().cast<ActiveMealWidget>()
           ),
         );
       }

@@ -12,16 +12,23 @@ class ActiveMealWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = activeMeal.ingredients;
-    return Column(
-      children: <Widget>[
-        new MealTitleWidget(title: activeMeal.name),
-        Column(
-          children: items.map((ingredient){
-            return ActiveIngredientTile(ingredient: ingredient);
-          }).toList(),
-        )
-      ],
+    final database = DatabaseProvider.of(context);
+    return StreamBuilder(
+      initialData: [],
+      stream: database.ingredientsStream(activeMeal),
+      builder: (context, snapshot) {
+        if (snapshot.data == null) { return Text("Loading..."); }
+        return Column(
+          children: <Widget>[
+            new MealTitleWidget(title: activeMeal.name),
+            Column(
+              children: snapshot.data.map((ingredient){
+                return ActiveIngredientTile(ingredient: ingredient);
+              }).toList().cast<ActiveIngredientTile>(),
+            )
+          ],
+        );
+      },
     );
   }
 }
