@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database.dart';
+import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/model.dart';
 
 class ActiveIngredientTile extends StatefulWidget {
   final ActiveIngredient _ingredient;
@@ -11,14 +12,14 @@ class ActiveIngredientTile extends StatefulWidget {
   }) : _ingredient = ingredient, assert(ingredient != null), super(key: key);
 
   @override
-  ActiveIngredientTileState createState() {
-    return new ActiveIngredientTileState();
+  _ActiveIngredientTileState createState() {
+    return new _ActiveIngredientTileState();
   }
 }
 
-class ActiveIngredientTileState extends State<ActiveIngredientTile> {
+class _ActiveIngredientTileState extends State<ActiveIngredientTile> {
   StreamSubscription<ActiveIngredient> subscription;
-  ActiveIngredientTileState();
+  _ActiveIngredientTileState();
   @override
   Widget build(BuildContext context) {
     final database = DatabaseProvider.of(context);
@@ -51,7 +52,6 @@ class ActiveIngredientTileState extends State<ActiveIngredientTile> {
 
   @override
     void didUpdateWidget(ActiveIngredientTile oldWidget) {
-      // TODO: implement didUpdateWidget
       super.didUpdateWidget(oldWidget);
       this.subscription.cancel();
       this.subscription = null;

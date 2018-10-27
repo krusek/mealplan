@@ -1,23 +1,24 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database.dart';
+import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/home_scaffold.dart';
 import 'package:uuid/uuid.dart';
 
-class CreateWidget extends StatelessWidget {
+class CreateMealWidget extends StatelessWidget {
   final SavedMeal meal;
-  CreateWidget({this.meal});
+  CreateMealWidget({this.meal});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-          child: CreateMealForm(meal: this.meal)
+          child: Padding(padding: EdgeInsets.symmetric(horizontal: 10.0), child: CreateMealForm(meal: this.meal))
     );
   }
 
   static Widget createScaffold({SavedMeal meal}) {
-    return HomeScaffold(child: CreateWidget(meal: meal));
+    return HomeScaffold(child: CreateMealWidget(meal: meal));
   }
 }
 

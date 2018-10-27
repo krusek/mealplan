@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:mealplan/data/database.dart';
-import 'package:mealplan/data/firestore.dart';
+import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/firestore_provider.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
-import 'package:mealplan/ui/create_meal.dart';
+import 'package:mealplan/ui/create_meal_widget.dart';
 import 'package:mealplan/ui/home_scaffold.dart';
-import 'package:mealplan/ui/meal_plan.dart';
+import 'package:mealplan/ui/saved_meals_widget.dart';
 import 'package:mealplan/ui/splash.dart';
 
 void main() => runApp(new MyApp());
@@ -31,7 +29,7 @@ class MyApp extends StatelessWidget {
           child: SavedMealsWidget(),
           actions: SavedMealsWidget.actions(context),
         ),
-        "/create_saved_meal/": (context) => CreateWidget.createScaffold(),
+        "/create_saved_meal/": (context) => CreateMealWidget.createScaffold(),
       },
       builder: (ctx, navigator) {
         return FirestoreProvider(child: DatabaseProvider(child: navigator));

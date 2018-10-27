@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database.dart';
+import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
-import 'package:mealplan/ui/create_meal.dart';
+import 'package:mealplan/ui/create_meal_widget.dart';
 
 class SavedMealsWidget extends StatelessWidget {
   @override
@@ -56,7 +57,7 @@ class SavedMealsListWidget extends StatelessWidget {
                       Navigator.push(context, 
                         MaterialPageRoute(
                           builder: (context) {
-                            return CreateWidget.createScaffold(meal: meal);
+                            return CreateMealWidget.createScaffold(meal: meal);
                           }
                         )
                       );
@@ -70,7 +71,6 @@ class SavedMealsListWidget extends StatelessWidget {
       ]
     );
   }
-
 }
 
 class ActiveMealsWidget extends StatelessWidget {
