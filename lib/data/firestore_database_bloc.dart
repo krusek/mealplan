@@ -78,11 +78,8 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   Stream<List<SavedMeal>> get savedMealsStream {
     return firebase.instance.collection(savedMealsName).snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
-        print("saved meal doc: ${doc.data}");
         return SavedMeal.fromJson(doc.data);
       }).toList();
-    })..listen((data) {
-      print("saved meal count: ${data.length}");
     });
   }
 
