@@ -12,8 +12,11 @@ class CreateMealWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-          child: Padding(padding: EdgeInsets.symmetric(horizontal: 10.0), child: CreateMealForm(meal: this.meal))
+    return Container(
+      decoration: BoxDecoration(color: Colors.white),
+      child: SingleChildScrollView(
+        child: CreateMealForm(meal: this.meal)
+      ),
     );
   }
 
@@ -30,10 +33,9 @@ class CreateMealForm extends StatefulWidget {
   State<StatefulWidget> createState() {
     return CreateMealFormState(meal);
   }
-
 }
 
-class CreateMealFormState extends State<CreateMealForm> {
+class CreateMealFormState extends State<CreateMealForm> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final String id;
   final List<MutableIngredient> ingredients = [];
@@ -52,7 +54,9 @@ class CreateMealFormState extends State<CreateMealForm> {
       key: _formKey,
       child: Column(
         children: [
-            TextFormField(
+          Padding(
+            padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+            child: TextFormField(
               initialValue: name ?? "",
               validator: (string) => string.isEmpty ? "Meal name required" : null,
               onSaved: (value) => this.name = value,
@@ -61,29 +65,40 @@ class CreateMealFormState extends State<CreateMealForm> {
                 hintText: "Meal Name",
               ),
             ),
-            Column(
-              children: ingredients.map((ingredient) => CreateIngredientContainer(ingredient: ingredient, key: Key(ingredient.id))).toList()
+          ),
+          AnimatedSize(
+            duration: Duration(milliseconds: 200),
+            vsync: this,
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: ingredients.map((ingredient) {
+                return Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child:CreateIngredientContainer(ingredient: ingredient, key: Key(ingredient.id))
+                );
+              }).toList()
             ),
-            FlatButton(
-              child: Text("Add Ingredient"),
-              onPressed: () {
-                setState(() {
-                  ingredients.add(MutableIngredient());                  
-                });
+          ),
+          FlatButton(
+            child: Text("Add Ingredient"),
+            onPressed: () {
+              setState(() {
+                ingredients.add(MutableIngredient());                  
+              });
+            }
+          ),
+          FlatButton(
+            child: Text("Save"),
+            onPressed: () {
+              final FormState form = _formKey.currentState;
+              if (form.validate()) {
+                form.save();
+                final database = DatabaseProvider.of(context);
+                database.saveMeal(this.id, this.name, this.ingredients);
+                Navigator.of(context).pop();
               }
-            ),
-            FlatButton(
-              child: Text("Save"),
-              onPressed: () {
-                final FormState form = _formKey.currentState;
-                if (form.validate()) {
-                  form.save();
-                  final database = DatabaseProvider.of(context);
-                  database.saveMeal(this.id, this.name, this.ingredients);
-                  Navigator.of(context).pop();
-                }
-              }
-            )
+            }
+          )
         ]
       ),
     );
@@ -102,11 +117,6 @@ class CreateIngredientContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: 5.0,
-          color: Colors.black12,
-        ),
         TextFormField(
           initialValue: ingredient.name,
           decoration: InputDecoration(labelText: "Ingredient Name"),
@@ -119,6 +129,9 @@ class CreateIngredientContainer extends StatelessWidget {
               decoration: InputDecoration(labelText: "Amount"),
               onSaved: (value) => ingredient.requiredAmount = value,
             )),
+            Container(
+              width: 10.0,
+            ),
             Flexible(child: TextFormField(
               initialValue: ingredient.unit,
               decoration: InputDecoration(labelText: "Unit"),
