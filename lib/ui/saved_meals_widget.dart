@@ -73,24 +73,36 @@ class SavedMealsListWidget extends StatelessWidget {
   }
 }
 
-class ActiveMealsWidget extends StatelessWidget {
+class ActiveMealsWidget extends StatefulWidget {
+  @override
+  ActiveMealsWidgetState createState() {
+    return new ActiveMealsWidgetState();
+  }
+}
+
+class ActiveMealsWidgetState extends State<ActiveMealsWidget> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final database = DatabaseProvider.of(context);
     return Column(
       children: [
         MealTitleWidget(title: "Active Meals"),
-        StreamBuilder<List<ActiveMeal>>(
-          initialData: [],
-          stream: database.activeMealaStream,
-          builder: (context, snapshot) {
-            final list = snapshot.data;
-            if (list != null && list.length > 0) {
-              return _mealsColumn(context, list);
-            } else {
-              return ListTile(title: Text("No active meals"));
+        AnimatedSize(
+          duration: Duration(milliseconds: 200),
+          alignment: Alignment.topCenter,
+          vsync: this,
+          child: StreamBuilder<List<ActiveMeal>>(
+            initialData: [],
+            stream: database.activeMealaStream,
+            builder: (context, snapshot) {
+              final list = snapshot.data;
+              if (list != null && list.length > 0) {
+                return _mealsColumn(context, list);
+              } else {
+                return ListTile(title: Text("No active meals"));
+              }
             }
-          }
+          ),
         ),
       ]
     );
