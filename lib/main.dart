@@ -95,7 +95,7 @@ class MyHomePage extends StatelessWidget {
                         textColor: Theme.of(context).accentColor,
                         child: Text("Create Meals"),
                         onPressed: () {
-                          Navigator.of(context).pushNamed("/create_saved_meal/");
+                          Navigator.of(context).pushNamed("/saved_meals/");
                         }
                       )
                     ),
