@@ -9,6 +9,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   final String savedMealsName = "saved_meals";
   final String activeMealsName = "active_meals";
   final String activeIngredientsName = "active_ingredients";
+  final String extraIngredientsName = "extra_ingredients";
   @override
   void activateMeal(SavedMeal meal) {
     final String id = Uuid().v1();
@@ -53,7 +54,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   @override
   Future loader(BuildContext context) async {
     this.firebase = FirestoreProvider.of(context);
-    await this.firebase.loader;
+    final _ = await this.firebase.loader;
   }
 
   @override
@@ -93,6 +94,44 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
     return firebase.instance.document(ingredient.id).snapshots().where((document) => document.data != null).map((document) {
       return ActiveIngredient.fromJson(document.data);
     });
+  }
+
+  @override
+  void clearExtraList() async {
+    final query = await firebase.instance.collection(extraIngredientsName).getDocuments();
+    query.documents.forEach((snapshot) {
+      snapshot.reference.delete();
+    });
+  }
+
+  @override
+  void clearCheckedExtraItems() async {
+    final query = await firebase.instance.collection(extraIngredientsName).getDocuments();
+    query.documents.forEach((snapshot) {
+      if (snapshot.data["acquired"] == true)
+        snapshot.reference.delete();
+    });
+    
+  }
+
+  @override
+  Stream<List<ActiveIngredient>> get extraShoppingStream {
+    return firebase.instance.collection(extraIngredientsName).snapshots().map((snapshot) {
+      return snapshot.documents.map((doc) {
+        return ActiveIngredient.fromJson(doc.data);
+      }).toList();
+    });
+  }
+
+  @override
+  void addExtraItem(MutableIngredient ingredient) {
+    final id = Uuid().v1();
+    final doc = firebase.instance.collection(extraIngredientsName).document(id);
+    
+    final json = ingredient.toJson();
+    json["id"] = doc.path;
+    json["acquired"] = false;
+    doc.setData(json);
   }
 
 }

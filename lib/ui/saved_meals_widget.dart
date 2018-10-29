@@ -52,6 +52,7 @@ class SavedMealsListWidget extends StatelessWidget {
                     database.activateMeal(meal);
                   },
                   trailing: FlatButton(
+                    textColor: Theme.of(context).accentColor,
                     child: Text("Edit Meal"),
                     onPressed: () {
                       Navigator.push(context, 
@@ -115,6 +116,7 @@ class ActiveMealsWidgetState extends State<ActiveMealsWidget> with TickerProvide
         return ListTile(
           title: Text(meal.name),
           trailing: IconButton(
+            color: Colors.orange,
             icon: Icon(Icons.close),
             onPressed: () {
               database.removeActiveMeal(meal);

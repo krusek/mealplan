@@ -50,6 +50,7 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Form(
       key: _formKey,
       child: Column(
@@ -60,6 +61,7 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
               initialValue: name ?? "",
               validator: (string) => string.isEmpty ? "Meal name required" : null,
               onSaved: (value) => this.name = value,
+              textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 labelText: "Meal Name",
                 hintText: "Meal Name",
@@ -70,7 +72,8 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
             duration: Duration(milliseconds: 200),
             vsync: this,
             alignment: Alignment.topCenter,
-            child: Column(
+            child: 
+            Column(
               children: ingredients.map((ingredient) {
                 return Padding(
                   padding: EdgeInsets.all(10.0),
@@ -80,6 +83,8 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
             ),
           ),
           FlatButton(
+            textColor: theme.accentColor,
+            color: theme.buttonColor,
             child: Text("Add Ingredient"),
             onPressed: () {
               setState(() {
@@ -88,6 +93,8 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
             }
           ),
           FlatButton(
+            textColor: theme.accentColor,
+            color: theme.buttonColor,
             child: Text("Save"),
             onPressed: () {
               final FormState form = _formKey.currentState;
@@ -121,6 +128,7 @@ class CreateIngredientContainer extends StatelessWidget {
           initialValue: ingredient.name,
           decoration: InputDecoration(labelText: "Ingredient Name"),
           onSaved: (value) => ingredient.name = value,
+          validator: (value) => value.isEmpty ? "Required" : null,
         ),
         Row(
           children: <Widget>[

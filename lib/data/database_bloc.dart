@@ -5,9 +5,13 @@ import 'package:mealplan/data/model.dart';
 abstract class DatabaseBloc {
   Stream<List<ActiveMeal>> get activeMealaStream;
   Stream<List<SavedMeal>> get savedMealsStream;
+  Stream<List<ActiveIngredient>> get extraShoppingStream;
   Stream<List<ActiveIngredient>> ingredientsStream(ActiveMeal meal);
   Stream<ActiveIngredient> ingredientStream(ActiveIngredient ingredient);
 
+  void addExtraItem(MutableIngredient ingredient);
+  void clearExtraList();
+  void clearCheckedExtraItems();
   void activateMeal(SavedMeal meal);
   void toggle({String id, bool value});
   void saveMeal(String id, String name, List<MutableIngredient> ingredients);

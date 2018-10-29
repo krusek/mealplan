@@ -9,6 +9,7 @@ import 'package:rxdart/rxdart.dart';
 class MemoryDatabaseBloc extends DatabaseBloc {
   List<_MemoryActiveMeal> _activeMeals = [];
   List<SavedMeal> _savedMeals = [];
+  List<ActiveIngredient> _extraItems = [];
 
   Future loader(BuildContext context) async {
     String data = await DefaultAssetBundle.of(context).loadString("assets/sample_data.json");
@@ -24,6 +25,7 @@ class MemoryDatabaseBloc extends DatabaseBloc {
   final _ingredientChanges = BehaviorSubject<ActiveIngredient>();
   final _activeMealsChanges = BehaviorSubject<List<_MemoryActiveMeal>>();
   final _savedMealsChanges = BehaviorSubject<List<SavedMeal>>();
+  final _extraItemsChanges = BehaviorSubject<List<ActiveIngredient>>();
 
   Stream<List<_MemoryActiveMeal>> get activeMealaStream => _activeMealsChanges.stream;
   Stream<List<SavedMeal>> get savedMealsStream => _savedMealsChanges.stream;
@@ -70,6 +72,24 @@ class MemoryDatabaseBloc extends DatabaseBloc {
       }
       return null;
     }).where((list) => list != null).distinct();
+  }
+
+  @override
+  void clearCheckedExtraItems() {
+  }
+
+  @override
+  void clearExtraList() {
+    // TODO: implement clearExtraList
+  }
+
+  // TODO: implement extraShoppingStream
+  @override
+  Stream<List<ActiveIngredient>> get extraShoppingStream => null;
+
+  @override
+  void addExtraItem(MutableIngredient ingredient) {
+    // TODO: implement addExtraItem
   }
 }
 

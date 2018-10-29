@@ -3,6 +3,8 @@ import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/firestore_provider.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
 import 'package:mealplan/ui/create_meal_widget.dart';
+import 'package:mealplan/ui/extra_items/extra_items_dialog.dart';
+import 'package:mealplan/ui/extra_items/extra_shopping_items_widget.dart';
 import 'package:mealplan/ui/home_scaffold.dart';
 import 'package:mealplan/ui/saved_meals_widget.dart';
 import 'package:mealplan/ui/splash.dart';
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Meal Plan',
       theme: ThemeData(
         primaryColor: Colors.blueAccent,
       ),
@@ -43,19 +45,55 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final database = DatabaseProvider.of(context);
-    return StreamBuilder(
-      initialData: [],
-      stream: database.activeMealaStream,
-      builder: (context, data) {
-        if (data.data == null) return Text("Loading");
-        return SingleChildScrollView(
-          child: Column(
-            children: data.data.map((meal) { 
-              return ActiveMealWidget(activeMeal: meal); 
-            }).toList().cast<ActiveMealWidget>()
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          MealTitleWidget(title: "Extra Shopping Items"),
+          new ExtraShoppingItemsWidget(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              FlatButton(
+                textColor: Colors.blue,
+                child: Text("Add Item"),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ExtraItemDialog();
+                    });
+                },
+              ),
+              FlatButton(
+                textColor: Colors.orange,
+                child: Text("Clear Checked"),
+                onPressed: () {
+                  database.clearCheckedExtraItems();
+                },
+              ),
+              FlatButton(
+                textColor: Colors.orange,
+                child: Text("Clear All"),
+                onPressed: () {
+                  database.clearExtraList();
+                },
+              ),
+            ],
           ),
-        );
-      }
+          StreamBuilder(
+            initialData: [],
+            stream: database.activeMealaStream,
+            builder: (context, data) {
+              if (data.data == null) return Text("Loading");
+              return Column(
+                children: data.data.map((meal) { 
+                  return ActiveMealWidget(activeMeal: meal); 
+                }).toList().cast<ActiveMealWidget>()
+              );
+            }
+          ),
+        ]
+      ),
     );
   }
 
@@ -70,3 +108,4 @@ class MyHomePage extends StatelessWidget {
     ];
   }
 }
+

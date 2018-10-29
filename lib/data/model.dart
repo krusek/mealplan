@@ -40,7 +40,21 @@ class SavedMeal {
   }
 }
 
-class Ingredient {
+abstract class IngredientBase {
+  String get name;
+  String get requiredAmount;
+  String get unit;
+
+  Map<String, dynamic> toJson() {
+    final json = Map<String, dynamic>();
+    json['name'] = this.name;
+    json['required_amount'] = this.requiredAmount;
+    json['unit'] = this.unit;
+    return json;
+  }
+}
+
+class Ingredient extends IngredientBase {
   final String name;
   final String requiredAmount;
   final String unit;
@@ -50,22 +64,14 @@ class Ingredient {
   : name = json['name'],
     requiredAmount = json['required_amount'],
     unit = json['unit'];
-  
-  Map<String, dynamic> toJson() {
-    final json = Map<String, dynamic>();
-    json['name'] = this.name;
-    json['required_amount'] = this.requiredAmount;
-    json['unit'] = this.unit;
-    return json;
-  }
 
-  static List<Map<String, dynamic>> toJsonList(List<Ingredient> ingredients) {
+  static List<Map<String, dynamic>> toJsonList(List<IngredientBase> ingredients) {
     return ingredients.map((ingredient) => ingredient.toJson()).toList();
   }
 
 }
 
-class ActiveIngredient {
+class ActiveIngredient extends IngredientBase {
   final String id;
   final String name;
   final String requiredAmount;
@@ -86,11 +92,8 @@ class ActiveIngredient {
     id = json['id'];
   
   Map<String, dynamic> toJson() {
-    final json = Map<String, dynamic>();
-    json['name'] = this.name;
-    json['id'] = this.id;
-    json['required_amount'] = this.requiredAmount;
-    json['unit'] = this.unit;
+    final json =super.toJson();
+    json["id"] = this.id;
     json['acquired'] = this.acquired;
     return json;
   }
@@ -105,20 +108,27 @@ class ActiveIngredient {
   }
 }
 
-class MutableIngredient {
+class MutableIngredient extends IngredientBase {
   String id;
   String name = "";
   String requiredAmount = "";
   String unit = "";
   MutableIngredient(): this.id = Uuid().v1();
 
-  static MutableIngredient from({Ingredient ingredient}) {
+  static MutableIngredient from({IngredientBase ingredient}) {
     final mutable = MutableIngredient();
     mutable.name = ingredient.name;
     mutable.requiredAmount = ingredient.requiredAmount;
     mutable.unit = ingredient.unit;
     return mutable;
   }
+
+  @override
+    Map<String, dynamic> toJson() {
+      final json = super.toJson();
+      json["id"] = this.id;
+      return json;
+    }
 
   @override
   String toString() {
