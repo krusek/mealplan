@@ -85,6 +85,23 @@ class MyHomePage extends StatelessWidget {
             stream: database.activeMealaStream,
             builder: (context, data) {
               if (data.data == null) return Text("Loading");
+              if (data.data.length == 0) {
+                return Column(
+                  children: <Widget>[
+                    MealTitleWidget(title: "Active Meals"),
+                    ListTile(
+                      title: Text("No meals added"),
+                      trailing: FlatButton(
+                        textColor: Theme.of(context).accentColor,
+                        child: Text("Create Meals"),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed("/create_saved_meal/");
+                        }
+                      )
+                    ),
+                  ],
+                );
+              }
               return Column(
                 children: data.data.map((meal) { 
                   return ActiveMealWidget(activeMeal: meal); 
