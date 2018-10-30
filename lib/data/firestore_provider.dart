@@ -40,8 +40,6 @@ class _FirestoreState extends State<FirestoreProvider> {
 class FirestoreBloc {
   Firestore _firestore;
   Future _loader;
-  CollectionReference _savedMealCollection;
-  CollectionReference _activeMealCollection;
 
   FirestoreBloc() {
     _firestore = Firestore.instance;
@@ -62,14 +60,8 @@ class FirestoreBloc {
       ),
     );
     final Firestore firestore = Firestore(app: app);
-    await firestore.settings(timestampsInSnapshotsEnabled: true);
-
-    _savedMealCollection = this.instance.collection("saved_meals");
-    _activeMealCollection = this.instance.collection("active_meals");
+    await firestore.settings(timestampsInSnapshotsEnabled: true);  
   }
-
-  Stream<QuerySnapshot> get savedMealsStream => _savedMealCollection.snapshots();
-  Stream<QuerySnapshot> get activeMealCollection => _activeMealCollection.snapshots();
 
   Firestore get instance => _firestore;
 

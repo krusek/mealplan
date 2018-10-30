@@ -1,19 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database_bloc.dart';
 import 'package:mealplan/data/firestore_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:uuid/uuid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseDatabaseBloc extends DatabaseBloc {
   FirestoreBloc firebase;
-  final String savedMealsName = "saved_meals";
-  final String activeMealsName = "active_meals";
-  final String activeIngredientsName = "active_ingredients";
-  final String extraIngredientsName = "extra_ingredients";
+  String get savedMealsName => uuid.length > 0 ? "data/$uuid/saved_meals" : "saved_meals";
+  String get activeMealsName => uuid.length > 0 ? "data/$uuid/active_meals" : "active_meals";
+  String get activeIngredientsName => uuid.length > 0 ? "data/$uuid/active_ingredients" : "active_ingredients";
+  String get extraIngredientsName => uuid.length > 0 ? "data/$uuid/extra_ingredients" : "extra_ingredents";
+  String uuid;
+
+  FirebaseDatabaseBloc({this.uuid});
+
   @override
   void activateMeal(SavedMeal meal) {
     final String id = Uuid().v1();
-    final doc = firebase.instance.collection(activeMealsName).document(id);
+    final doc = _activeMealsCollection.document(id);
     doc.setData({
       "id": doc.path,
       "name": meal.name,
@@ -31,7 +37,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
 
   @override
   Stream<List<ActiveMeal>> get activeMealaStream {
-    return this.firebase.instance.collection(activeMealsName).snapshots().map((snapshot) {
+    return _activeMealsCollection.snapshots().map((snapshot) {
       return snapshot.documents.map((document) {
         Map<String,dynamic> json = document.data;
         json["ingredients"] = [];
@@ -53,9 +59,19 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
 
   @override
   Future loader(BuildContext context) async {
+    if (this.uuid == null) {
+      final preferences = await SharedPreferences.getInstance();
+      this.uuid = preferences.getString("uuid") ?? Uuid().v1();
+      await preferences.setString("uuid", this.uuid);
+    }
     this.firebase = FirestoreProvider.of(context);
-    final _ = await this.firebase.loader;
+    final _ = await this.firebase.loader(context);
+    print(this.savedMealsName);
   }
+
+  CollectionReference get _savedMealsCollection => firebase.instance.collection(savedMealsName);
+  CollectionReference get _activeMealsCollection => firebase.instance.collection(activeMealsName);
+  CollectionReference get _extraItemsCollection => firebase.instance.collection(extraIngredientsName);
 
   @override
   void removeActiveMeal(ActiveMeal meal) async {
@@ -68,16 +84,15 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   }
 
   @override
-  void saveMeal(String id, String name, List<MutableIngredient> ingredients) {
+  void saveMeal(String id, String name, List<IngredientBase> ingredients) {
     final saved = SavedMeal(id, name, ingredients);
     final json = saved.toJson();
-    firebase.instance.collection(savedMealsName).document(id).setData(json);
+    _savedMealsCollection.document(id).setData(json);
   }
 
-  // TODO: implement savedMealsStream
   @override
   Stream<List<SavedMeal>> get savedMealsStream {
-    return firebase.instance.collection(savedMealsName).snapshots().map((snapshot) {
+    return _savedMealsCollection.snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
         return SavedMeal.fromJson(doc.data);
       }).toList();
@@ -98,7 +113,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
 
   @override
   void clearExtraList() async {
-    final query = await firebase.instance.collection(extraIngredientsName).getDocuments();
+    final query = await _extraItemsCollection.getDocuments();
     query.documents.forEach((snapshot) {
       snapshot.reference.delete();
     });
@@ -106,7 +121,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
 
   @override
   void clearCheckedExtraItems() async {
-    final query = await firebase.instance.collection(extraIngredientsName).getDocuments();
+    final query = await _extraItemsCollection.getDocuments();
     query.documents.forEach((snapshot) {
       if (snapshot.data["acquired"] == true)
         snapshot.reference.delete();
@@ -116,7 +131,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
 
   @override
   Stream<List<ActiveIngredient>> get extraShoppingStream {
-    return firebase.instance.collection(extraIngredientsName).snapshots().map((snapshot) {
+    return _extraItemsCollection.snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
         return ActiveIngredient.fromJson(doc.data);
       }).toList();
@@ -126,7 +141,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   @override
   void addExtraItem(MutableIngredient ingredient) {
     final id = Uuid().v1();
-    final doc = firebase.instance.collection(extraIngredientsName).document(id);
+    final doc = _extraItemsCollection.document(id);
     
     final json = ingredient.toJson();
     json["id"] = doc.path;

@@ -14,7 +14,7 @@ abstract class DatabaseBloc {
   void clearCheckedExtraItems();
   void activateMeal(SavedMeal meal);
   void toggle({String id, bool value});
-  void saveMeal(String id, String name, List<MutableIngredient> ingredients);
+  void saveMeal(String id, String name, List<IngredientBase> ingredients);
   void removeActiveMeal(ActiveMeal meal);
   Future loader(BuildContext context);
 }

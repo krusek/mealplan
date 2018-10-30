@@ -46,7 +46,7 @@ class MemoryDatabaseBloc extends DatabaseBloc {
     _ingredientChanges.add(ingredient);
   }
 
-  void saveMeal(String id, String name, List<MutableIngredient> ingredients) {
+  void saveMeal(String id, String name, List<IngredientBase> ingredients) {
     _savedMeals.removeWhere((meal) => meal.id == id);
     final saved = SavedMeal(id, name, ingredients);
     _savedMeals.add(saved);

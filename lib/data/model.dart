@@ -24,7 +24,7 @@ class SavedMeal {
   final String name;
   final List<Ingredient> ingredients;
 
-  SavedMeal(this.id, this.name, List<MutableIngredient> mutable):
+  SavedMeal(this.id, this.name, List<IngredientBase> mutable):
     this.ingredients = mutable.map((ingredient) => Ingredient(name: ingredient.name, requiredAmount: ingredient.requiredAmount, unit: ingredient.unit)).toList();
   SavedMeal.fromJson(Map<String, dynamic> json)
     : name = json["name"],
