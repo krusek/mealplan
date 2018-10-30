@@ -66,7 +66,6 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
     }
     this.firebase = FirestoreProvider.of(context);
     final _ = await this.firebase.loader(context);
-    print(this.savedMealsName);
   }
 
   CollectionReference get _savedMealsCollection => firebase.instance.collection(savedMealsName);

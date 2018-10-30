@@ -49,7 +49,6 @@ class TransferBloc {
 
     this.source.savedMealsStream.listen((meals) {
       for (SavedMeal meal in meals) {
-        print("id: ${meal.id}");
         this.destination.saveMeal(meal.id, meal.name, meal.ingredients);
       }
     });
