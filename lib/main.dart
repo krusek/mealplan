@@ -7,6 +7,7 @@ import 'package:mealplan/ui/create_meal_widget.dart';
 import 'package:mealplan/ui/extra_items/extra_items_dialog.dart';
 import 'package:mealplan/ui/extra_items/extra_shopping_items_widget.dart';
 import 'package:mealplan/ui/home_scaffold.dart';
+import 'package:mealplan/ui/safe_area_scroll_view.dart';
 import 'package:mealplan/ui/saved_meals_widget.dart';
 import 'package:mealplan/ui/splash.dart';
 
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         "/create_saved_meal/": (context) => CreateMealWidget.createScaffold(),
       },
       builder: (ctx, navigator) {
-        return FirestoreProvider(child: DatabaseProvider(child: navigator));
+        return FirestoreProvider(child: DatabaseProvider(child: navigator, uuid: "",));
       },
     );
   }
@@ -46,7 +47,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final database = DatabaseProvider.of(context);
-    return SingleChildScrollView(
+    return SafeAreaScrollView(
       child: Column(
         children: [
           MealTitleWidget(title: "Extra Shopping Items"),

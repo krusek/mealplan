@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/home_scaffold.dart';
+import 'package:mealplan/ui/safe_area_scroll_view.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateMealWidget extends StatelessWidget {
@@ -14,8 +15,8 @@ class CreateMealWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(color: Colors.white),
-      child: SingleChildScrollView(
-        child: CreateMealForm(meal: this.meal)
+      child: SafeAreaScrollView(
+        child: CreateMealForm(meal: this.meal),
       ),
     );
   }

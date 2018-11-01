@@ -5,12 +5,13 @@ import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
 import 'package:mealplan/ui/create_meal_widget.dart';
+import 'package:mealplan/ui/safe_area_scroll_view.dart';
 
 class SavedMealsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
+    return SafeAreaScrollView(
+      child: Column(
         children: [
           ActiveMealsWidget(),
           SavedMealsListWidget(),
