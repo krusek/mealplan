@@ -39,14 +39,19 @@ class _ActiveIngredientTileState extends State<ActiveIngredientTile> {
           decoration: ingredient.acquired ? TextDecoration.lineThrough : null,
         ),
       ),
-      subtitle: Text("${ingredient.requiredAmount} ${ingredient.unit}", 
+      subtitle: _subtitle(ingredient),
+      leading: Checkbox(value: ingredient.acquired, onChanged: (value){
+        database.toggle(id: ingredient.id, value: value);
+      },)
+    );
+  }
+
+  Widget _subtitle(ActiveIngredient ingredient) {
+    if ((ingredient.unit.length + ingredient.requiredAmount.length) == 0) return null;
+    return Text("${ingredient.requiredAmount} ${ingredient.unit}", 
         style: TextStyle(
           decoration: ingredient.acquired ? TextDecoration.lineThrough : null,
         ),
-      ),
-      trailing: Checkbox(value: ingredient.acquired, onChanged: (value){
-        database.toggle(id: ingredient.id, value: value);
-      },)
     );
   }
 

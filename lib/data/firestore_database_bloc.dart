@@ -42,7 +42,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
         Map<String,dynamic> json = document.data;
         json["ingredients"] = [];
         return ActiveMeal.fromJson(json);
-      }).toList();  
+      }).toList()..sort((meal1, meal2) => meal1.name.toLowerCase().compareTo(meal2.name.toLowerCase()));  
     });
   }
 
@@ -53,17 +53,23 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
         Map<String,dynamic> json = document.data;
         json["id"] = document.reference.path;
         return ActiveIngredient.fromJson(json);
-      }).toList();
+      }).toList()..sort((ing1, ing2) => ing1.name.toLowerCase().compareTo(ing2.name.toLowerCase()));
     });
   }
 
+  Future _loader;
   @override
-  Future loader(BuildContext context) async {
+  Future loader(BuildContext context) {
+    if (_loader == null) _loader = _load(context);
+    return _loader;
+  }
+  Future _load(BuildContext context) async {
     if (this.uuid == null) {
       final preferences = await SharedPreferences.getInstance();
       this.uuid = preferences.getString("uuid") ?? Uuid().v1();
       await preferences.setString("uuid", this.uuid);
     }
+    print("uuid: $uuid");
     this.firebase = FirestoreProvider.of(context);
     final _ = await this.firebase.loader(context);
   }
@@ -94,7 +100,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
     return _savedMealsCollection.snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
         return SavedMeal.fromJson(doc.data);
-      }).toList();
+      }).toList()..sort((meal1, meal2) => meal1.name.toLowerCase().compareTo(meal2.name.toLowerCase()));
     });
   }
 
@@ -133,7 +139,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
     return _extraItemsCollection.snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
         return ActiveIngredient.fromJson(doc.data);
-      }).toList();
+      }).toList()..sort((ing1, ing2) => ing1.name.toLowerCase().compareTo(ing2.name.toLowerCase()));
     });
   }
 

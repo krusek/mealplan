@@ -114,14 +114,20 @@ class ActiveMealsWidgetState extends State<ActiveMealsWidget> with TickerProvide
     final database = DatabaseProvider.of(context);
     return Column(
       children: meals.map((meal) {
-        return ListTile(
-          title: Text(meal.name),
-          trailing: IconButton(
-            color: Colors.orange,
-            icon: Icon(Icons.close),
-            onPressed: () {
-              database.removeActiveMeal(meal);
-            },
+        return Dismissible(
+          key: Key(meal.id),
+          onDismissed: (_) {
+            database.removeActiveMeal(meal);
+          },
+          child: ListTile(
+            title: Text(meal.name),
+            trailing: IconButton(
+              color: Colors.orange,
+              icon: Icon(Icons.close),
+              onPressed: () {
+                database.removeActiveMeal(meal);
+              },
+            ),
           ),
         );
       }).toList()
