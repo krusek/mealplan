@@ -12,7 +12,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   String get activeMealsName => uuid.length > 0 ? "data/$uuid/active_meals" : "active_meals";
   String get activeIngredientsName => uuid.length > 0 ? "data/$uuid/active_ingredients" : "active_ingredients";
   String get extraIngredientsName => uuid.length > 0 ? "data/$uuid/extra_ingredients" : "extra_ingredents";
-  String uuid;
+  String uuid = "";
 
   FirebaseDatabaseBloc({this.uuid});
 
