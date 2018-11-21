@@ -5,6 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
+/// This widget is used to provide the connection to firestore. It has
+/// a helper inherited widget that is used for speedy ancestor lookups.
+/// 
+/// In order for the firestore to work the file `assets/firestore.json` 
+/// needs to be provided. See [FirestoreBloc._load] to see what is 
+/// expected in that json file.
 class FirestoreProvider extends StatefulWidget {
   final Widget _child;
   FirestoreProvider({Widget child}) : this._child = child;
@@ -22,8 +28,10 @@ class FirestoreProvider extends StatefulWidget {
 class _FirestoreWidget extends InheritedWidget {
   final _FirestoreState state;
   _FirestoreWidget({Widget child, @required this.state}): super(child: child);
+
+  /// This is only used as a helper, so notification is never needed.
   @override
-  bool updateShouldNotify(InheritedWidget oldWidget) => true;
+  bool updateShouldNotify(InheritedWidget oldWidget) => false;
 
 }
 

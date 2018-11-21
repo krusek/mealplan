@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/database_provider.dart';
-import 'package:mealplan/data/firestore_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
 import 'package:mealplan/ui/create_meal_widget.dart';
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         "/create_saved_meal/": (context) => CreateMealWidget.createScaffold(),
       },
       builder: (ctx, navigator) {
-        return FirestoreProvider(child: DatabaseProvider(child: navigator, uuid: "",));
+        return DatabaseProvider(child: navigator, uuid: "",);
       },
     );
   }
