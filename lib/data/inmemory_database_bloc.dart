@@ -40,10 +40,12 @@ class MemoryDatabaseBloc extends DatabaseBloc {
     _activeMealsChanges.add(_activeMeals);
   }
 
+  Iterable<ActiveIngredient> get _allActiveIngredients => _activeMeals.expand((meal) => meal._ingredients).followedBy(_extraItems);
   void toggle({String id, bool value}) {
-    final ingredient = _activeMeals.expand((meal) => meal._ingredients).firstWhere((ingredient) => ingredient.id == id, orElse: () => null);
+    ActiveIngredient ingredient = _allActiveIngredients.firstWhere((ingredient) => ingredient.id == id, orElse: () => null);
     ingredient?.acquired = value;
     _ingredientChanges.add(ingredient);
+    _extraItemsChanges.add(_extraItems);
   }
 
   void saveMeal(String id, String name, List<IngredientBase> ingredients) {
@@ -76,20 +78,26 @@ class MemoryDatabaseBloc extends DatabaseBloc {
 
   @override
   void clearCheckedExtraItems() {
+    _extraItems.removeWhere((ingredient) => ingredient.acquired);
+    _extraItemsChanges.add(_extraItems);
   }
 
   @override
   void clearExtraList() {
-    // TODO: implement clearExtraList
+    _extraItems = [];
+    _extraItemsChanges.add(_extraItems);
   }
 
-  // TODO: implement extraShoppingStream
   @override
-  Stream<List<ActiveIngredient>> get extraShoppingStream => null;
+  Stream<List<ActiveIngredient>> get extraShoppingStream => _extraItemsChanges;
 
   @override
   void addExtraItem(MutableIngredient ingredient) {
-    // TODO: implement addExtraItem
+    final json = ingredient.toJson();
+    json["acquired"] = false;
+    final active = ActiveIngredient.fromJson(json);
+    _extraItems.add(active);
+    _extraItemsChanges.add(_extraItems);
   }
 }
 
