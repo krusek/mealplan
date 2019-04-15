@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
-import 'package:mealplan/ui/create_meal_widget.dart';
 import 'package:mealplan/ui/safe_area_scroll_view.dart';
+import 'package:mealplan/ui/saved_meal_list_tile_widget.dart';
 
 class SavedMealsWidget extends StatelessWidget {
   @override
@@ -47,25 +47,7 @@ class SavedMealsListWidget extends StatelessWidget {
             if (snapshot.data == null) { return ListTile(title: Text("No Saved Meals.")); }
             return Column(
               children: snapshot.data.map((meal) {
-                return ListTile(
-                  title: Text(meal.name),
-                  onTap: () {
-                    database.activateMeal(meal);
-                  },
-                  trailing: FlatButton(
-                    textColor: Theme.of(context).accentColor,
-                    child: Text("Edit Meal"),
-                    onPressed: () {
-                      Navigator.push(context, 
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return CreateMealWidget.createScaffold(meal: meal);
-                          }
-                        )
-                      );
-                    }
-                  ),
-                );
+                return new SavedMealListTileWidget(meal: meal);
               }).toList(),
             );
           }
