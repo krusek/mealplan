@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/firestore_database_bloc.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
 import 'package:mealplan/ui/create_meal_widget.dart';
@@ -11,6 +12,8 @@ import 'package:mealplan/ui/saved_meals_widget.dart';
 import 'package:mealplan/ui/splash.dart';
 
 void main() => runApp(new MyApp());
+
+const String LK = "";
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -35,7 +38,7 @@ class MyApp extends StatelessWidget {
         "/create_saved_meal/": (context) => CreateMealWidget.createScaffold(),
       },
       builder: (ctx, navigator) {
-        return DatabaseProvider(child: navigator, uuid: "",);
+        return DatabaseProvider(child: navigator, uuid: LK,);
       },
     );
   }
@@ -139,6 +142,20 @@ class MyHomePage extends StatelessWidget {
           Navigator.of(context).pushNamed("/saved_meals/");
         },
         child: Text("Meals", style: TextStyle(color: Colors.white),),
+      ),
+      FlatButton(
+        onPressed: () {
+          FirebaseDatabaseBloc provider = DatabaseProvider.of(context);
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("uuid: ${provider.uuid}")
+              );
+            }
+          );
+        },
+        child: Text("UUID", style: TextStyle(color: Colors.white),),
       ),
     ];
   }
