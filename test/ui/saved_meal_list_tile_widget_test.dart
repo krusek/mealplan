@@ -38,22 +38,29 @@ class MockNavigationBloc extends NavigationBloc {
 }
 
 void main() {
-  testWidgets('Test appropriate title', (WidgetTester tester) async {
-    final meal = SavedMeal("123", "My meal", []);
+  final meal = SavedMeal("123", "My meal", []);
+  MockNavigationBloc bloc;
+  MaterialApp app;
+
+  setUp(() {
     final builder = (context) => SavedMealListTileWidget(meal: meal);
-    final app = buildWidget(builder: builder);
-    
+    bloc = MockNavigationBloc();
+    app = buildWidget(builder: builder, bloc: bloc);
+
+  });
+  testWidgets('Test appropriate title', (WidgetTester tester) async {
     await tester.pumpWidget(app);
     await tester.pumpAndSettle();
     expect(find.text(meal.name), findsOneWidget);
   });
 
-  testWidgets('Test editor pushed', (WidgetTester tester) async {
-    final meal = SavedMeal("123", "My meal", []);
-    final builder = (context) => SavedMealListTileWidget(meal: meal);
-    final bloc = MockNavigationBloc();
-    final app = buildWidget(builder: builder, bloc: bloc);
+  testWidgets('Test edit button title', (WidgetTester tester) async {
+    await tester.pumpWidget(app);
+    await tester.pumpAndSettle();
+    expect(find.text("Edit Meal"), findsOneWidget);
+  });
 
+  testWidgets('Test saved meal editor pushed', (WidgetTester tester) async {
     await tester.pumpWidget(app);
     await tester.pumpAndSettle();
     expect(bloc.savedMealEditorPushed, false);
