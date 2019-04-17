@@ -53,6 +53,7 @@ class MemoryDatabaseBloc extends DatabaseBloc {
     final saved = SavedMeal(id, name, ingredients);
     _savedMeals.add(saved);
     this._savedMealsChanges.add(_savedMeals);
+    return saved;
   }
 
   void removeActiveMeal(ActiveMeal meal) {

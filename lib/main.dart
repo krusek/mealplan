@@ -5,7 +5,6 @@ import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
 import 'package:mealplan/ui/create_meal_widget.dart';
-import 'package:mealplan/ui/extra_items/extra_items_dialog.dart';
 import 'package:mealplan/ui/extra_items/extra_shopping_items_widget.dart';
 import 'package:mealplan/ui/home_scaffold.dart';
 import 'package:mealplan/ui/safe_area_scroll_view.dart';

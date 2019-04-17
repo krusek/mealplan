@@ -93,6 +93,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
     final saved = SavedMeal(id, name, ingredients);
     final json = saved.toJson();
     _savedMealsCollection.document(id).setData(json);
+    return saved;
   }
 
   @override
