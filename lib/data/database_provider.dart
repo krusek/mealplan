@@ -78,10 +78,13 @@ class DatabaseProvider extends StatefulWidget {
   /// any special characters.
   final String uuid;
   final DatabaseType database;
-  DatabaseProvider({Key key, this.child, this.uuid, this.database = DatabaseType.firestore}) : super(key: key);
+  final DatabaseBloc _bloc;
+  DatabaseProvider({Key key, this.child, this.uuid, this.database = DatabaseType.firestore, DatabaseBloc bloc}) : 
+    _bloc = bloc,
+    super(key: key);
   @override
   _DatabaseProviderState createState() {
-    return _DatabaseProviderState(uuid: this.uuid, database: database);
+    return _DatabaseProviderState(uuid: this.uuid, database: database, bloc: _bloc);
   }
 
   static DatabaseBloc of(BuildContext context) {
@@ -94,8 +97,8 @@ class _DatabaseProviderState extends State<DatabaseProvider> {
   final String uuid;
   final DatabaseBloc bloc;
   
-  _DatabaseProviderState({this.uuid, @required this.database}):
-  this.bloc = database == DatabaseType.firestore ? FirebaseDatabaseBloc(uuid: uuid) : MemoryDatabaseBloc();
+  _DatabaseProviderState({this.uuid, @required this.database, DatabaseBloc bloc}):
+  this.bloc = bloc ?? (database == DatabaseType.firestore ? FirebaseDatabaseBloc(uuid: uuid) : MemoryDatabaseBloc());
 
   @override
   Widget build(BuildContext context) {

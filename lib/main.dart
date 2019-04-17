@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           child: SavedMealsWidget(),
           actions: SavedMealsWidget.actions(context),
         ),
-        // "/create_saved_meal/": (context) => CreateMealWidget.createScaffold(),
+        // "/create_saved_meal/": (context) => CreateMealWidget.creatfleScaffold(),
       },
       onGenerateRoute: (settings) {
         switch (settings.name) {

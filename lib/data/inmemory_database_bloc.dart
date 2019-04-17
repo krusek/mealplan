@@ -65,6 +65,7 @@ class MemoryDatabaseBloc extends DatabaseBloc {
     _ingredientChanges.close();
     _activeMealsChanges.close();
     _savedMealsChanges.close();
+    _extraItemsChanges.close();
   }
 
   @override

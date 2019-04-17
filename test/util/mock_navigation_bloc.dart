@@ -30,7 +30,7 @@ class MockNavigationBloc extends NavigationBloc {
 
   @override
   Future<SavedMeal> pushSavedMealEditor({SavedMeal meal}) {
-    // TODO: implement pushSavedMealEditor
+    savedMealEditorPushed = true;
     return null;
   }
 
