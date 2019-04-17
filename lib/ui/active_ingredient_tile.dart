@@ -58,13 +58,13 @@ class _ActiveIngredientTileState extends State<ActiveIngredientTile> {
   @override
     void didUpdateWidget(ActiveIngredientTile oldWidget) {
       super.didUpdateWidget(oldWidget);
-      this.subscription.cancel();
+      this.subscription?.cancel();
       this.subscription = null;
     }
 
   @override
     void dispose() {
-      this.subscription.cancel();
+      this.subscription?.cancel();
       this.subscription = null;
       super.dispose();
     }

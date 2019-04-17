@@ -5,6 +5,7 @@ import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
+import 'package:mealplan/ui/dismissible_active_meal_list_tile.dart';
 import 'package:mealplan/ui/safe_area_scroll_view.dart';
 import 'package:mealplan/ui/saved_meal_list_tile_widget.dart';
 
@@ -94,25 +95,9 @@ class ActiveMealsWidgetState extends State<ActiveMealsWidget> with TickerProvide
   }
 
   Widget _mealsColumn(BuildContext context, List<ActiveMeal> meals) {
-    final database = DatabaseProvider.of(context);
     return Column(
       children: meals.map((meal) {
-        return Dismissible(
-          key: Key(meal.id),
-          onDismissed: (_) {
-            database.removeActiveMeal(meal);
-          },
-          child: ListTile(
-            title: Text(meal.name),
-            trailing: IconButton(
-              color: Colors.orange,
-              icon: Icon(Icons.close),
-              onPressed: () {
-                database.removeActiveMeal(meal);
-              },
-            ),
-          ),
-        );
+        return new DismissibleActiveMealListTile(activeMeal: meal);
       }).toList()
     );
   }
