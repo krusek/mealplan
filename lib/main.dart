@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/firestore_database_bloc.dart';
 import 'package:mealplan/data/model.dart';
+import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
 import 'package:mealplan/ui/create_meal_widget.dart';
 import 'package:mealplan/ui/extra_items/extra_items_dialog.dart';
@@ -35,10 +36,22 @@ class MyApp extends StatelessWidget {
           child: SavedMealsWidget(),
           actions: SavedMealsWidget.actions(context),
         ),
-        "/create_saved_meal/": (context) => CreateMealWidget.createScaffold(),
+        // "/create_saved_meal/": (context) => CreateMealWidget.createScaffold(),
+      },
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case "/create_saved_meal/":
+          final argument = settings.arguments as EditMealRouteArguments;
+          return MaterialPageRoute<SavedMeal>(
+            builder: (context) {
+              return CreateMealWidget.createScaffold(meal: argument?.meal);
+            }
+          );
+        }
+        return null;
       },
       builder: (ctx, navigator) {
-        return DatabaseProvider(child: navigator, uuid: LK,);
+        return NavigationProvider(child: DatabaseProvider(child: navigator, uuid: LK,));
       },
     );
   }
@@ -67,11 +80,7 @@ class MyHomePage extends StatelessWidget {
                     textColor: Colors.blue,
                     child: Text("Add Item"),
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return ExtraItemDialog();
-                        });
+                      NavigationProvider.of(context).presentExtraItemDialog();
                     },
                   ),
                   FlatButton(
@@ -107,7 +116,7 @@ class MyHomePage extends StatelessWidget {
                         textColor: Theme.of(context).accentColor,
                         child: Text("Create Meals"),
                         onPressed: () {
-                          Navigator.of(context).pushNamed("/saved_meals/");
+                          NavigationProvider.of(context).pushSavedMealsList();
                         }
                       )
                     ),
@@ -139,7 +148,7 @@ class MyHomePage extends StatelessWidget {
     return [
       FlatButton(
         onPressed: () {
-          Navigator.of(context).pushNamed("/saved_meals/");
+          NavigationProvider.of(context).pushSavedMealsList();
         },
         child: Text("Meals", style: TextStyle(color: Colors.white),),
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
+import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/active_meal_widget.dart';
 import 'package:mealplan/ui/safe_area_scroll_view.dart';
 import 'package:mealplan/ui/saved_meal_list_tile_widget.dart';
@@ -25,7 +26,7 @@ class SavedMealsWidget extends StatelessWidget {
     return [
       FlatButton(
         onPressed: () {
-          Navigator.of(context).pushNamed("/create_saved_meal/");
+          NavigationProvider.of(context).pushCreateSavedMeal();
         },
         child: Text("Create", style: TextStyle(color: Colors.white),),
       ),

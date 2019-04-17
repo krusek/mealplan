@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/navigation/navigation_provider.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _SplashState extends State<Splash> {
 
     Future.wait(futures).then((_) {
       if (context == null) { return; }
-      Navigator.of(context).pushReplacementNamed("/home/"); 
+      NavigationProvider.of(context).switchToHome();
     });
   }
 }

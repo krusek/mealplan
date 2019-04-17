@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
+import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/create_meal_widget.dart';
 import 'package:uuid/uuid.dart';
 
@@ -56,8 +57,8 @@ class CreateIngredientFormState extends State<CreateIngredientForm> with TickerP
                 final FormState form = _formKey.currentState;
                 if (form.validate()) {
                   form.save();
-                  database.addExtraItem(ingredient);
-                  Navigator.of(context).pop();
+                  final active = database.addExtraItem(ingredient);
+                  NavigationProvider.of(context).finishExtraItemDialog(ingredient: active);
                 }
               }
             ),
@@ -66,7 +67,7 @@ class CreateIngredientFormState extends State<CreateIngredientForm> with TickerP
               textColor: Colors.orange,
               child: Text("Cancel"),
               onPressed: () {
-                Navigator.of(context).pop();
+                NavigationProvider.of(context).finishExtraItemDialog(ingredient: null);
               }
             )
           ]

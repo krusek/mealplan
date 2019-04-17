@@ -48,7 +48,7 @@ class MemoryDatabaseBloc extends DatabaseBloc {
     _extraItemsChanges.add(_extraItems);
   }
 
-  void saveMeal(String id, String name, List<IngredientBase> ingredients) {
+  SavedMeal saveMeal(String id, String name, List<IngredientBase> ingredients) {
     _savedMeals.removeWhere((meal) => meal.id == id);
     final saved = SavedMeal(id, name, ingredients);
     _savedMeals.add(saved);
@@ -92,12 +92,13 @@ class MemoryDatabaseBloc extends DatabaseBloc {
   Stream<List<ActiveIngredient>> get extraShoppingStream => _extraItemsChanges;
 
   @override
-  void addExtraItem(MutableIngredient ingredient) {
+  ActiveIngredient addExtraItem(MutableIngredient ingredient) {
     final json = ingredient.toJson();
     json["acquired"] = false;
     final active = ActiveIngredient.fromJson(json);
     _extraItems.add(active);
     _extraItemsChanges.add(_extraItems);
+    return active;
   }
 }
 

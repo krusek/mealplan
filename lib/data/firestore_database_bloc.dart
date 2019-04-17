@@ -89,7 +89,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   }
 
   @override
-  void saveMeal(String id, String name, List<IngredientBase> ingredients) {
+  SavedMeal saveMeal(String id, String name, List<IngredientBase> ingredients) {
     final saved = SavedMeal(id, name, ingredients);
     final json = saved.toJson();
     _savedMealsCollection.document(id).setData(json);
@@ -144,7 +144,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   }
 
   @override
-  void addExtraItem(MutableIngredient ingredient) {
+  ActiveIngredient addExtraItem(MutableIngredient ingredient) {
     final id = Uuid().v1();
     final doc = _extraItemsCollection.document(id);
     
@@ -152,6 +152,8 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
     json["id"] = doc.path;
     json["acquired"] = false;
     doc.setData(json);
+
+    return ActiveIngredient.fromJson(json);
   }
 
 }

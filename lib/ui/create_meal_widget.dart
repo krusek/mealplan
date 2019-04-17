@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
+import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/home_scaffold.dart';
 import 'package:mealplan/ui/safe_area_scroll_view.dart';
 import 'package:uuid/uuid.dart';
+
+class EditMealRouteArguments {
+  final SavedMeal meal;
+  const EditMealRouteArguments({this.meal});
+}
 
 class CreateMealWidget extends StatelessWidget {
   final SavedMeal meal;
@@ -102,8 +108,8 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
               if (form.validate()) {
                 form.save();
                 final database = DatabaseProvider.of(context);
-                database.saveMeal(this.id, this.name, this.ingredients);
-                Navigator.of(context).pop();
+                final meal = database.saveMeal(this.id, this.name, this.ingredients);
+                NavigationProvider.of(context).finishSavedMeal(meal: meal);
               }
             }
           )
