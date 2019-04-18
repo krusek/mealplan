@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/active/dismissible_active_meal_list_tile.dart';
 
-import '../util/mock_database_bloc.dart';
-import '../util/setup.dart';
+import '../../util/mock_database_bloc.dart';
+import '../../util/setup.dart';
 
 void main() {
   final activeMeal = ActiveMeal(randomSavedMeal());
