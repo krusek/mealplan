@@ -1,48 +1,40 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
 
-class ActiveIngredientTile extends StatefulWidget {
-  final ActiveIngredient _ingredient;
-  const ActiveIngredientTile({
-    Key key, @required ActiveIngredient ingredient
-  }) : _ingredient = ingredient, assert(ingredient != null), super(key: key);
-
-  @override
-  _ActiveIngredientTileState createState() {
-    return new _ActiveIngredientTileState();
-  }
-}
-
-class _ActiveIngredientTileState extends State<ActiveIngredientTile> {
-  StreamSubscription<ActiveIngredient> subscription;
-  _ActiveIngredientTileState();
+class ActiveIngredientTile extends StatelessWidget {
+  final ActiveIngredient ingredient;
+  ActiveIngredientTile({Key key, @required this.ingredient}): super(key: key);
   @override
   Widget build(BuildContext context) {
     final database = DatabaseProvider.of(context);
-    final ingredient = this.widget._ingredient;
-    if (this.subscription == null) {
-      this.subscription =  database.ingredientStream(ingredient).listen((_) {
-        setState((){});
-      });
-    }
-    return ListTile(
-      onTap: () {
-        database.toggle(id: ingredient.id, value: !ingredient.acquired);
-
+    return StreamBuilder(
+      stream: database.ingredientStream(ingredient),
+      initialData: ingredient,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final ingredient = snapshot.data as ActiveIngredient;
+        if (ingredient == null) {
+          return Text("Loading...");
+        }
+        return ListTile(
+          onTap: () {
+            database.toggle(id: ingredient.id, value: !ingredient.acquired);
+          },
+          title: Text(ingredient.name, 
+            style: TextStyle(
+              decoration: ingredient.acquired ? TextDecoration.lineThrough : null,
+            ),
+          ),
+          subtitle: _subtitle(ingredient),
+          leading: Checkbox(
+            value: ingredient.acquired, 
+            onChanged: (value){
+              database.toggle(id: ingredient.id, value: value);
+            },
+          )
+        );
       },
-      title: Text(ingredient.name, 
-        style: TextStyle(
-          decoration: ingredient.acquired ? TextDecoration.lineThrough : null,
-        ),
-      ),
-      subtitle: _subtitle(ingredient),
-      leading: Checkbox(value: ingredient.acquired, onChanged: (value){
-        database.toggle(id: ingredient.id, value: value);
-      },)
     );
   }
 
@@ -55,17 +47,4 @@ class _ActiveIngredientTileState extends State<ActiveIngredientTile> {
     );
   }
 
-  @override
-    void didUpdateWidget(ActiveIngredientTile oldWidget) {
-      super.didUpdateWidget(oldWidget);
-      this.subscription?.cancel();
-      this.subscription = null;
-    }
-
-  @override
-    void dispose() {
-      this.subscription?.cancel();
-      this.subscription = null;
-      super.dispose();
-    }
 }
