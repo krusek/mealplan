@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:mealplan/ui/saved_meal_list_tile_widget.dart';
+import 'package:mealplan/ui/saved/saved_meal_list_tile_widget.dart';
 
 import '../util/mock_database_bloc.dart';
 import '../util/mock_navigation_bloc.dart';

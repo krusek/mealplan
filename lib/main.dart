@@ -3,13 +3,13 @@ import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/firestore_database_bloc.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
-import 'package:mealplan/ui/active_meal_widget.dart';
-import 'package:mealplan/ui/create_meal_widget.dart';
+import 'package:mealplan/ui/active/active_meal_widget.dart';
 import 'package:mealplan/ui/extra_items/extra_shopping_items_widget.dart';
-import 'package:mealplan/ui/home_scaffold.dart';
-import 'package:mealplan/ui/safe_area_scroll_view.dart';
-import 'package:mealplan/ui/saved_meals_widget.dart';
-import 'package:mealplan/ui/splash.dart';
+import 'package:mealplan/ui/saved/create_meal_widget.dart';
+import 'package:mealplan/ui/saved/saved_meals_widget.dart';
+import 'package:mealplan/ui/util/home_scaffold.dart';
+import 'package:mealplan/ui/util/safe_area_scroll_view.dart';
+import 'package:mealplan/ui/util/splash.dart';
 
 void main() => runApp(new MyApp());
 

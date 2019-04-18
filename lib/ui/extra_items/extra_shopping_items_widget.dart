@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database_provider.dart';
-import 'package:mealplan/ui/active_ingredient_tile.dart';
+import 'package:mealplan/ui/active/active_ingredient_tile.dart';
 
 class ExtraShoppingItemsWidget extends StatefulWidget {
   const ExtraShoppingItemsWidget({

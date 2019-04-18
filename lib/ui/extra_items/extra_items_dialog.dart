@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
-import 'package:mealplan/ui/create_meal_widget.dart';
+import 'package:mealplan/ui/saved/create_meal_widget.dart';
 import 'package:uuid/uuid.dart';
 
 class ExtraItemDialog extends SimpleDialog {
