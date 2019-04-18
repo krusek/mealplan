@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/model.dart';
-import 'package:mealplan/ui/create_meal_widget.dart';
 import 'package:mealplan/ui/extra_items/extra_items_dialog.dart';
+import 'package:mealplan/ui/saved/create_meal_widget.dart';
 
 class _NavigationBloc extends NavigationBloc {
   BuildContext _context;
