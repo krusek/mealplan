@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mealplan/data/model.dart';
 
 import 'package:mealplan/ui/saved_meal_list_tile_widget.dart';
 
@@ -9,7 +8,7 @@ import '../util/mock_navigation_bloc.dart';
 import '../util/setup.dart';
 
 void main() {
-  final meal = SavedMeal("123", "My meal", []);
+  final meal = randomSavedMeal();
   MockNavigationBloc navigationBloc;
   MockDatabaseBloc databaseBloc;
   MaterialApp app;

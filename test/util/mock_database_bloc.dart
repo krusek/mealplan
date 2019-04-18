@@ -52,9 +52,10 @@ class MockDatabaseBloc extends DatabaseBloc {
     return null;
   }
 
+  final removedMeals = List<ActiveMeal>();
   @override
   void removeActiveMeal(ActiveMeal meal) {
-    // TODO: implement removeActiveMeal
+    removedMeals.add(meal);
   }
 
   @override
