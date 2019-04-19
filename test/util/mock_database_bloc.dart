@@ -34,10 +34,10 @@ class MockDatabaseBloc extends DatabaseBloc {
   // TODO: implement extraShoppingStream
   Stream<List<ActiveIngredient>> get extraShoppingStream => null;
 
+  Map<String, List<ActiveIngredient>> activeIngredientMap = Map();
   @override
   Stream<ActiveIngredient> ingredientStream(ActiveIngredient ingredient) {
-    // TODO: implement ingredientStream
-    return null;
+    return Stream.fromIterable(activeIngredientMap[ingredient.id] ?? []);
   }
 
   @override
@@ -68,9 +68,10 @@ class MockDatabaseBloc extends DatabaseBloc {
   // TODO: implement savedMealsStream
   Stream<List<SavedMeal>> get savedMealsStream => null;
 
+  final Map<String, bool> toggles = Map();
   @override
   void toggle({String id, bool value}) {
-    // TODO: implement toggle
+    toggles[id] = value;
   }
 
 }

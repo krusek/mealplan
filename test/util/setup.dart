@@ -26,7 +26,16 @@ MaterialApp buildWidget({WidgetBuilder builder, MockNavigationBloc navigationBlo
 
 SavedMeal randomSavedMeal({int ingredientCount = 0}) {
   final ingredients = Iterable.generate(ingredientCount).map((_) {
-    return Ingredient(name: Uuid().v1().toString(), requiredAmount: Uuid().v1().toString(), unit: Uuid().v1().toString());
+    return randomIngredient();
   }).toList();
   return SavedMeal(Uuid().v1().toString(), Uuid().v1().toString(), ingredients);
+}
+
+Ingredient randomIngredient() {
+  return Ingredient(name: Uuid().v1().toString(), requiredAmount: Uuid().v1().toString(), unit: Uuid().v1().toString());
+}
+
+ActiveIngredient randomActiveIngredient({bool acquired}) {
+  final ingredient = randomIngredient();
+  return ActiveIngredient(ingredient, acquired: acquired ?? false);
 }

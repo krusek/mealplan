@@ -78,11 +78,11 @@ class ActiveIngredient extends IngredientBase {
   final String unit;
   bool acquired;
 
-  ActiveIngredient(Ingredient ingredient): 
+  ActiveIngredient(Ingredient ingredient, {bool acquired}): 
     this.name = ingredient.name, 
     this.requiredAmount = ingredient.requiredAmount, 
     this.unit = ingredient.unit,
-    this.acquired = false,
+    this.acquired = acquired ?? false,
     this.id = Uuid().v1();
   ActiveIngredient.fromJson(Map<String,dynamic> json)
   : name = json['name'],

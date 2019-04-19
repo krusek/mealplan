@@ -5,7 +5,7 @@ import 'package:mealplan/data/model.dart';
 
 class ActiveIngredientTile extends StatelessWidget {
   final ActiveIngredient ingredient;
-  ActiveIngredientTile({Key key, @required this.ingredient}): super(key: key);
+  ActiveIngredientTile({Key key, @required this.ingredient}): assert(ingredient != null), super(key: key);
   @override
   Widget build(BuildContext context) {
     final database = DatabaseProvider.of(context);
@@ -14,9 +14,6 @@ class ActiveIngredientTile extends StatelessWidget {
       initialData: ingredient,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final ingredient = snapshot.data as ActiveIngredient;
-        if (ingredient == null) {
-          return Text("Loading...");
-        }
         return ListTile(
           onTap: () {
             database.toggle(id: ingredient.id, value: !ingredient.acquired);
