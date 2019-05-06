@@ -39,3 +39,9 @@ ActiveIngredient randomActiveIngredient({bool acquired}) {
   final ingredient = randomIngredient();
   return ActiveIngredient(ingredient, acquired: acquired ?? false);
 }
+
+Iterable<ActiveIngredient> randomActiveIngredients(int count) sync* {
+  for (int ix = 0; ix < count; ix++) {
+    yield randomActiveIngredient();
+  }
+}

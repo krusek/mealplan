@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database_bloc.dart';
 import 'package:mealplan/data/model.dart';
@@ -40,10 +42,10 @@ class MockDatabaseBloc extends DatabaseBloc {
     return Stream.fromIterable(activeIngredientMap[ingredient.id] ?? []);
   }
 
+  Map<String, StreamController<List<ActiveIngredient>>> ingredientControllerMap = Map();
   @override
   Stream<List<ActiveIngredient>> ingredientsStream(ActiveMeal meal) {
-    // TODO: implement ingredientsStream
-    return null;
+    return ingredientControllerMap[meal.id]?.stream ?? Stream.empty();
   }
 
   @override

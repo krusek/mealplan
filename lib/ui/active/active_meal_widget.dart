@@ -15,10 +15,12 @@ class ActiveMealWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final database = DatabaseProvider.of(context);
     return StreamBuilder(
-      initialData: [],
+      initialData: null,
       stream: database.ingredientsStream(activeMeal),
       builder: (context, snapshot) {
-        if (snapshot.data == null) { return Text("Loading..."); }
+        if (snapshot.data == null) { 
+          return Text("Loading..."); 
+        }
         return Column(
           children: <Widget>[
             new MealTitleWidget(title: activeMeal.name),
