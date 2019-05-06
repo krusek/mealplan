@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mealplan/data/database_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
-import 'package:mealplan/ui/saved/create_ingredient_container.dart';
+import 'package:mealplan/ui/saved/mutable_ingredient_container.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateIngredientForm extends StatefulWidget {
@@ -34,7 +34,7 @@ class CreateIngredientFormState extends State<CreateIngredientForm> with TickerP
         vsync: this,
         child: Column(
           children: [
-            CreateIngredientContainer(ingredient: ingredient, key: Key(ingredient.id)),
+            MutableIngredientContainer(ingredient: ingredient, key: Key(ingredient.id)),
             Container(height: 12.0),
             FlatButton(
               color: Colors.black12,

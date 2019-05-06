@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mealplan/data/model.dart';
-import 'package:mealplan/ui/active/active_ingredient_tile.dart';
-import 'package:mealplan/ui/active/active_meal_widget.dart';
-import 'package:mealplan/ui/saved/create_ingredient_container.dart';
+import 'package:mealplan/ui/saved/mutable_ingredient_container.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../util/mock_database_bloc.dart';
@@ -103,7 +99,7 @@ class IngredientContainerForm extends StatelessWidget {
       key: formKey,
       child: Column(
         children: <Widget>[
-          CreateIngredientContainer(ingredient: ingredient),
+          MutableIngredientContainer(ingredient: ingredient),
           FlatButton(
             child: Text('Submit'),
             onPressed: () {
@@ -127,7 +123,7 @@ class IngredientContainerForm extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return Column(
 //       children: <Widget>[
-//         CreateIngredientContainer(ingredient: ingredient),
+//         MutableIngredientContainer(ingredient: ingredient),
 //         FlatButton(
 //           child: Text('Submit'),
 //           onPressed: () {

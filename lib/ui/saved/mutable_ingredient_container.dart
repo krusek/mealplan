@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/model.dart';
 
-class CreateIngredientContainer extends StatelessWidget {
+class MutableIngredientContainer extends StatelessWidget {
   final MutableIngredient ingredient;
-  const CreateIngredientContainer({
+  const MutableIngredientContainer({
     Key key,
     this.ingredient,
   }) : super(key: key);

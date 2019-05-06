@@ -8,7 +8,7 @@ import 'package:mealplan/ui/util/home_scaffold.dart';
 import 'package:mealplan/ui/util/safe_area_scroll_view.dart';
 import 'package:uuid/uuid.dart';
 
-import 'create_ingredient_container.dart';
+import 'mutable_ingredient_container.dart';
 
 class EditMealRouteArguments {
   final SavedMeal meal;
@@ -86,7 +86,7 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
               children: ingredients.map((ingredient) {
                 return Padding(
                   padding: EdgeInsets.all(10.0),
-                  child:CreateIngredientContainer(ingredient: ingredient, key: Key(ingredient.id))
+                  child:MutableIngredientContainer(ingredient: ingredient, key: Key(ingredient.id))
                 );
               }).toList()
             ),
