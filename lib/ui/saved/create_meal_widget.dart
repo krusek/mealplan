@@ -8,6 +8,8 @@ import 'package:mealplan/ui/util/home_scaffold.dart';
 import 'package:mealplan/ui/util/safe_area_scroll_view.dart';
 import 'package:uuid/uuid.dart';
 
+import 'create_ingredient_container.dart';
+
 class EditMealRouteArguments {
   final SavedMeal meal;
   const EditMealRouteArguments({this.meal});
@@ -117,44 +119,4 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
       ),
     );
   }
-
 }
-
-class CreateIngredientContainer extends StatelessWidget {
-  final MutableIngredient ingredient;
-  const CreateIngredientContainer({
-    Key key,
-    this.ingredient,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextFormField(
-          initialValue: ingredient.name,
-          decoration: InputDecoration(labelText: "Ingredient Name"),
-          onSaved: (value) => ingredient.name = value,
-          validator: (value) => value.isEmpty ? "Required" : null,
-        ),
-        Row(
-          children: <Widget>[
-            Flexible(child: TextFormField(
-              initialValue: ingredient.requiredAmount,
-              decoration: InputDecoration(labelText: "Amount"),
-              onSaved: (value) => ingredient.requiredAmount = value,
-            )),
-            Container(
-              width: 10.0,
-            ),
-            Flexible(child: TextFormField(
-              initialValue: ingredient.unit,
-              decoration: InputDecoration(labelText: "Unit"),
-              onSaved: (value) => ingredient.unit = value,
-            ))
-          ],
-        )
-      ]
-    );
-  }
-} 

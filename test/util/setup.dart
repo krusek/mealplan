@@ -40,6 +40,10 @@ ActiveIngredient randomActiveIngredient({bool acquired}) {
   return ActiveIngredient(ingredient, acquired: acquired ?? false);
 }
 
+MutableIngredient randomMutableIngredient() {
+  return MutableIngredient.from(ingredient: randomIngredient());
+}
+
 Iterable<ActiveIngredient> randomActiveIngredients(int count) sync* {
   for (int ix = 0; ix < count; ix++) {
     yield randomActiveIngredient();
