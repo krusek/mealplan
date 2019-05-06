@@ -4,14 +4,12 @@ import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/saved/mutable_ingredient_container.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../util/mock_database_bloc.dart';
 import '../../util/setup.dart';
 
 void main() {
   IngredientContainerForm form;
   GlobalKey<FormState> formKey;
   MutableIngredient ingredient;
-  MockDatabaseBloc databaseBloc;
   Widget app;
 
   Finder nameFinder;
@@ -19,10 +17,9 @@ void main() {
   Finder unitFinder;
   setUp(() {
     ingredient = randomMutableIngredient();
-    databaseBloc = MockDatabaseBloc();
     formKey = GlobalKey<FormState>();
     form = IngredientContainerForm(ingredient: ingredient, formKey: formKey);
-    app = buildWidget(databaseBloc: databaseBloc, builder: (context) => form);
+    app = buildWidget(builder: (context) => form);
 
     nameFinder = find.widgetWithText(TextFormField, ingredient.name);
     amountFinder = find.widgetWithText(TextFormField, ingredient.requiredAmount);
