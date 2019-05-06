@@ -11,14 +11,6 @@ import '../../util/setup.dart';
 
 typedef _ActiveIngredientPredicate = bool Function(Widget widget) Function(ActiveIngredient ingredient);
 
-bool Function(Widget widget) filteredPredicate<T>(bool predicate(T filtered)) {
-  return (widget) {
-    if (!(widget is T)) return false;
-    final item = widget as T;
-    return predicate(item);
-  };
-}
-
 void main() {
   final activeMeal = ActiveMeal(randomSavedMeal());
   MockDatabaseBloc databaseBloc;

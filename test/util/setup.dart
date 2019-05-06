@@ -45,3 +45,11 @@ Iterable<ActiveIngredient> randomActiveIngredients(int count) sync* {
     yield randomActiveIngredient();
   }
 }
+
+bool Function(Widget widget) filteredPredicate<T>(bool predicate(T filtered)) {
+  return (widget) {
+    if (!(widget is T)) return false;
+    final item = widget as T;
+    return predicate(item);
+  };
+}
