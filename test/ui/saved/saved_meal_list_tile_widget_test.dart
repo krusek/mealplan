@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mealplan/ui/saved/saved_meal_list_tile_widget.dart';
 
-import '../../util/mock_database_bloc.dart';
-import '../../util/mock_navigation_bloc.dart';
+import '../../util/mock_database.dart';
+import '../../util/mock_navigation.dart';
 import '../../util/setup.dart';
 
 void main() {
   final meal = randomSavedMeal();
-  MockNavigationBloc navigationBloc;
-  MockDatabaseBloc databaseBloc;
+  MockNavigation navigation;
+  MockDatabase database;
   MaterialApp app;
 
   setUp(() {
     final builder = (context) => SavedMealListTileWidget(meal: meal);
-    navigationBloc = MockNavigationBloc();
-    databaseBloc = MockDatabaseBloc();
-    app = buildWidget(builder: builder, navigationBloc: navigationBloc, databaseBloc: databaseBloc);
+    navigation = MockNavigation();
+    database = MockDatabase();
+    app = buildWidget(builder: builder, navigation: navigation, database: database);
 
   });
   testWidgets('Test appropriate text', (WidgetTester tester) async {
@@ -29,12 +29,12 @@ void main() {
   testWidgets('Test saved meal editor pushed', (WidgetTester tester) async {
     await tester.pumpWidget(app);
     await tester.pumpAndSettle();
-    expect(navigationBloc.savedMealEditorPushed, false);
+    expect(navigation.savedMealEditorPushed, false);
 
     await tester.tap(find.byType(FlatButton));
     
     await tester.pumpAndSettle();
-    expect(navigationBloc.savedMealEditorPushed, true);
+    expect(navigation.savedMealEditorPushed, true);
   });
 
   testWidgets('Test saved meal activated', (WidgetTester tester) async {
@@ -46,7 +46,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final activated = databaseBloc.activatedMeals.first;
+    final activated = database.activatedMeals.first;
     expect(activated, meal, reason:"meal not activated");
   });
 }

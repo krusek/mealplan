@@ -6,22 +6,22 @@ import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/active/active_ingredient_tile.dart';
 import 'package:mealplan/ui/active/active_meal_widget.dart';
 
-import '../../util/mock_database_bloc.dart';
+import '../../util/mock_database.dart';
 import '../../util/setup.dart';
 
 typedef _ActiveIngredientPredicate = bool Function(Widget widget) Function(ActiveIngredient ingredient);
 
 void main() {
   final activeMeal = ActiveMeal(randomSavedMeal());
-  MockDatabaseBloc databaseBloc;
+  MockDatabase databaseBloc;
   MaterialApp app;
   StreamController<List<ActiveIngredient>> controller;
   setUp(() {
     controller = StreamController<List<ActiveIngredient>>();
     final builder = (context) => ActiveMealWidget(activeMeal: activeMeal);
-    databaseBloc = MockDatabaseBloc();
+    databaseBloc = MockDatabase();
     databaseBloc.ingredientControllerMap[activeMeal.id] = controller;
-    app = buildWidget(builder: builder, navigationBloc: null, databaseBloc: databaseBloc);
+    app = buildWidget(builder: builder, navigation: null, database: databaseBloc);
   });
 
   tearDown(() async {

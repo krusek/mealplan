@@ -2,10 +2,10 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database_bloc.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
 
-class MockDatabaseBloc extends DatabaseBloc {
+class MockDatabase extends Database {
   final List<SavedMeal> activatedMeals = [];
   @override
   void activateMeal(SavedMeal meal) {

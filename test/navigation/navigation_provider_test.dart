@@ -8,10 +8,6 @@ import 'package:provider/provider.dart';
 
 import '../util/setup.dart';
 
-class BLah extends Equatable {
-
-}
-
 void main() {
   Widget app;
   NavigationTestWidget widget;
@@ -20,7 +16,7 @@ void main() {
     app = buildWidget(
       builder: (_) {
         widget = NavigationTestWidget();
-        navigator = MockNavigatorWidget(child: Provider<Navigation>(child: widget));
+        navigator = MockNavigatorWidget(child: Provider<Navigation>(builder: (context) => Navigation(context: context), child: widget));
         return navigator;
       },
     );
@@ -61,10 +57,6 @@ void main() {
     mockNavigator.expectedResult = ingredient;
     state.finishExtraItemDialog(ingredient: ingredient);
     assert(mockNavigator.routePopped);
-  });
-
-  test('figuring out stuff', () {
-    expectLater(actual, emitsInOrder(matchers))
   });
 }
 
@@ -134,7 +126,7 @@ class NavigationTestWidget extends StatefulWidget {
   _NavigationTestWidgetState createState() => _NavigationTestWidgetState();
 }
 
-class _NavigationTestWidgetState extends State<NavigationTestWidget> implements NavigationBloc {
+class _NavigationTestWidgetState extends State<NavigationTestWidget> implements Navigation {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

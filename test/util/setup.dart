@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:mealplan/data/database_bloc.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import 'mock_navigation_bloc.dart';
+import 'mock_navigation.dart';
 
-typedef NavigationBlocBuilder = NavigationBloc Function(BuildContext context);
+typedef NavigationBuilder = Navigation Function(BuildContext context);
 
 MaterialApp buildWidget({
   WidgetBuilder builder, 
-  NavigationBlocBuilder navigationBlocBuilder, 
-  NavigationBloc navigationBloc,
-  DatabaseBloc databaseBloc,
+  NavigationBuilder navigationBuilder, 
+  Navigation navigation,
+  Database database,
   List<NavigatorObserver> navigationObservers = const []}) {
-  assert(navigationBloc == null || navigationBlocBuilder == null);
-  if (navigationBloc != null && navigationBlocBuilder == null) {
-    navigationBlocBuilder = (_) => navigationBloc;
+  assert(navigation == null || navigationBuilder == null);
+  if (navigation == null && navigationBuilder == null) {
+    navigation = MockNavigation();
+  }
+  if (navigation != null && navigationBuilder == null) {
+    navigationBuilder = (_) => navigation;
   }
 
   return MaterialApp(
@@ -28,18 +31,21 @@ MaterialApp buildWidget({
       ),
       color: Colors.blue,
       routes: {
-        "/": (context) => Provider<Navigation>(builder: navigationBlocBuilder, child: Material(child: builder(context)))
+        "/": (context) => Provider<Navigation>(builder: navigationBuilder, child: Material(child: builder(context)))
       },
       onGenerateRoute: (settings) {
         return MaterialPageRoute<SavedMeal>(
           settings: settings,
           builder: (context) {
-            return Provider<Navigation>(builder: navigationBlocBuilder, child: Material(child: builder(context)));
+            return Provider<Navigation>(builder: navigationBuilder, child: Material(child: builder(context)));
           }
         ) ;
       },
       builder: (ctx, navigator) {
-        return Provider<Navigation>(builder: (_) => navigationBloc, child: DatabaseProvider(child: navigator, uuid: "", database: DatabaseType.memory, bloc: databaseBloc));
+        return Provider<Database>.value(
+          child: navigator, 
+          value: database,
+        );
       },
     );
 }

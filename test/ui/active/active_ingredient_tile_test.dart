@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/active/active_ingredient_tile.dart';
-import 'package:rxdart/rxdart.dart';
 
-import '../../util/mock_database_bloc.dart';
+import '../../util/mock_database.dart';
 import '../../util/setup.dart';
 
 void main() {
-  MockDatabaseBloc databaseBloc;
+  MockDatabase databaseBloc;
   setUp(() {
-    databaseBloc = MockDatabaseBloc();
+    databaseBloc = MockDatabase();
   });
 
   testWidgets("Tap widget toggles weirdly updated ingredient off -> on", (WidgetTester tester) async {
@@ -20,7 +19,7 @@ void main() {
     final laterIngredient = randomActiveIngredient(acquired: true);
     final builder = (context) => ActiveIngredientTile(ingredient: ingredient);
     databaseBloc.activeIngredientMap[ingredient.id] = [laterIngredient];
-    final app = buildWidget(builder: builder, databaseBloc: databaseBloc, navigationBloc: null);
+    final app = buildWidget(builder: builder, database: databaseBloc, navigation: null);
 
     await tester.pumpWidget(app);
     await tester.pumpAndSettle();
@@ -50,9 +49,9 @@ void main() {
   });
 }
 
-Future testTapWidgetTogglesDatabase(ActiveIngredient ingredient, MockDatabaseBloc databaseBloc, WidgetTester tester, Type type) async {
+Future testTapWidgetTogglesDatabase(ActiveIngredient ingredient, MockDatabase databaseBloc, WidgetTester tester, Type type) async {
   final builder = (context) => ActiveIngredientTile(ingredient: ingredient);
-  final app = buildWidget(builder: builder, databaseBloc: databaseBloc, navigationBloc: null);
+  final app = buildWidget(builder: builder, database: databaseBloc, navigation: null);
   
   await tester.pumpWidget(app);
   await tester.pumpAndSettle();

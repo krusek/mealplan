@@ -7,7 +7,7 @@ import 'package:mealplan/ui/saved/create_meal_widget.dart';
 
 class Navigation {
   BuildContext _context;
-  Navigation({BuildContext context}): _context = context;
+  Navigation({@required BuildContext context}): _context = context;
   Future<SavedMeal> pushSavedMealEditor({SavedMeal meal}) {
     final arguments = EditMealRouteArguments(meal: meal);
     return Navigator.of(_context).pushNamed("/create_saved_meal/", arguments: arguments);
