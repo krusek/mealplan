@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/ui/active/active_ingredient_tile.dart';
+import 'package:provider/provider.dart';
 
 class ExtraShoppingItemsWidget extends StatefulWidget {
   const ExtraShoppingItemsWidget({
@@ -16,7 +17,7 @@ class ExtraShoppingItemsWidget extends StatefulWidget {
 class ExtraShoppingItemsWidgetState extends State<ExtraShoppingItemsWidget> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseProvider.of(context);
+    final database = Provider.of<Database>(context);
     return AnimatedSize(
       duration: Duration(milliseconds: 200),
       alignment: Alignment.topCenter,

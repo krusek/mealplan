@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mealplan/data/database_provider.dart';
-import 'package:mealplan/data/firestore_database_bloc.dart';
+import 'package:mealplan/data/firestore_database.dart';
+import 'package:mealplan/data/firestore_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/active/active_meal_widget.dart';
@@ -10,13 +10,16 @@ import 'package:mealplan/ui/saved/saved_meals_widget.dart';
 import 'package:mealplan/ui/util/home_scaffold.dart';
 import 'package:mealplan/ui/util/safe_area_scroll_view.dart';
 import 'package:mealplan/ui/util/splash.dart';
+import 'package:provider/provider.dart';
+import 'data/database.dart';
 
 void main() => runApp(new MyApp());
 
 const String LK = "";
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  MyApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,33 +28,52 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blueAccent,
       ),
       color: Colors.blue,
-      routes: {
-        "/": (context) => Splash(),
-        "/home/": (context) => HomeScaffold(
-          child: MyHomePage(),
-            actions: MyHomePage.actions(context),
-          ),
-        "/saved_meals/": (context) => HomeScaffold(
-          child: SavedMealsWidget(),
-          actions: SavedMealsWidget.actions(context),
-        ),
-        // "/create_saved_meal/": (context) => CreateMealWidget.creatfleScaffold(),
-      },
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case "/create_saved_meal/":
           final argument = settings.arguments as EditMealRouteArguments;
-          return MaterialPageRoute<SavedMeal>(
-            builder: (context) {
-              return CreateMealWidget.createScaffold(meal: argument?.meal);
-            }
-          );
+          return createScaffoldRoute<SavedMeal>(context, CreateMealWidget(meal: argument?.meal), null);
+          case "/":
+          return createRoute(context, Splash());
+          case "/home/":
+          return createScaffoldRoute(context, MyHomePage(), MyHomePage.actions);
+          case "/saved_meals/":
+          return createScaffoldRoute(context, SavedMealsWidget(), SavedMealsWidget.actions);
         }
         return null;
       },
-      builder: (ctx, navigator) {
-        return NavigationProvider(child: DatabaseProvider(child: navigator, uuid: LK,));
+      builder: (_, navigator) {
+        return FirestoreProvider( 
+          child: Provider<Database>(
+            builder: (context) => FirebaseDatabase(uuid: LK),
+            child: navigator,
+          ),
+        );
       },
+    );
+  }
+
+  MaterialPageRoute<T> createScaffoldRoute<T>(BuildContext context, Widget child, List<Widget> Function(BuildContext context) actions) {
+    return MaterialPageRoute(
+      builder: (context) => Provider<Navigation>(
+        builder: (context) => Navigation(context: context),
+        child: Builder(
+          builder: (context) => HomeScaffold(
+            child: child,
+            actions: actions == null ? [] : actions(context),
+          ),
+        ) ,
+      ),
+    );
+  }
+
+
+  MaterialPageRoute<T> createRoute<T>(BuildContext context, Widget child) {
+    return MaterialPageRoute(
+      builder: (context) => Provider<Navigation>(
+        builder: (context) => Navigation(context: context),
+        child: child,
+      ),
     );
   }
 }
@@ -60,7 +82,7 @@ class MyHomePage extends StatelessWidget {
   MyHomePage();
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseProvider.of(context);
+    final database = Provider.of<Database>(context);
     return SafeAreaScrollView(
       child: Column(
         children: [
@@ -79,7 +101,7 @@ class MyHomePage extends StatelessWidget {
                     textColor: Colors.blue,
                     child: Text("Add Item"),
                     onPressed: () {
-                      NavigationProvider.of(context).presentExtraItemDialog();
+                      Provider.of<Navigation>(context).presentExtraItemDialog();
                     },
                   ),
                   FlatButton(
@@ -115,7 +137,7 @@ class MyHomePage extends StatelessWidget {
                         textColor: Theme.of(context).accentColor,
                         child: Text("Create Meals"),
                         onPressed: () {
-                          NavigationProvider.of(context).pushSavedMealsList();
+                          Provider.of<Navigation>(context).pushSavedMealsList();
                         }
                       )
                     ),
@@ -147,18 +169,19 @@ class MyHomePage extends StatelessWidget {
     return [
       FlatButton(
         onPressed: () {
-          NavigationProvider.of(context).pushSavedMealsList();
+          Provider.of<Navigation>(context).pushSavedMealsList();
         },
         child: Text("Meals", style: TextStyle(color: Colors.white),),
       ),
       FlatButton(
         onPressed: () {
-          FirebaseDatabaseBloc provider = DatabaseProvider.of(context);
+          final database = Provider.of<Database>(context) as FirebaseDatabase;
+          if (database == null) return;
           showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text("uuid: ${provider.uuid}")
+                title: Text("uuid: ${database.uuid}")
               );
             }
           );

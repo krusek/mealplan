@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
+import 'package:provider/provider.dart';
 
 class ActiveIngredientTile extends StatelessWidget {
   final ActiveIngredient ingredient;
   ActiveIngredientTile({Key key, @required this.ingredient}): assert(ingredient != null), super(key: key);
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseProvider.of(context);
+    final database = Provider.of<Database>(context);
     return StreamBuilder(
       stream: database.ingredientStream(ingredient),
       initialData: ingredient,

@@ -1,11 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/util/home_scaffold.dart';
 import 'package:mealplan/ui/util/safe_area_scroll_view.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import 'mutable_ingredient_container.dart';
@@ -109,9 +110,9 @@ class CreateMealFormState extends State<CreateMealForm> with TickerProviderState
               final FormState form = _formKey.currentState;
               if (form.validate()) {
                 form.save();
-                final database = DatabaseProvider.of(context);
+                final database = Provider.of<Database>(context);
                 final meal = database.saveMeal(this.id, this.name, this.ingredients);
-                NavigationProvider.of(context).finishSavedMeal(meal: meal);
+                Provider.of<Navigation>(context).finishSavedMeal(meal: meal);
               }
             }
           )

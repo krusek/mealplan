@@ -7,19 +7,39 @@ import 'package:uuid/uuid.dart';
 
 import 'mock_navigation_bloc.dart';
 
-MaterialApp buildWidget({WidgetBuilder builder, MockNavigationBloc navigationBloc, DatabaseBloc databaseBloc}) {
-  navigationBloc = navigationBloc ?? MockNavigationBloc();
+typedef NavigationBlocBuilder = NavigationBloc Function(BuildContext context);
+
+MaterialApp buildWidget({
+  WidgetBuilder builder, 
+  NavigationBlocBuilder navigationBlocBuilder, 
+  NavigationBloc navigationBloc,
+  DatabaseBloc databaseBloc,
+  List<NavigatorObserver> navigationObservers = const []}) {
+  assert(navigationBloc == null || navigationBlocBuilder == null);
+  if (navigationBloc != null && navigationBlocBuilder == null) {
+    navigationBlocBuilder = (_) => navigationBloc;
+  }
+
   return MaterialApp(
       title: 'Meal Plan',
+      navigatorObservers: navigationObservers,
       theme: ThemeData(
         primaryColor: Colors.blueAccent,
       ),
       color: Colors.blue,
       routes: {
-        "/": (context) => NavigationProvider(builder: (_) => navigationBloc, child: Material(child: builder(context)))
+        "/": (context) => Provider<Navigation>(builder: navigationBlocBuilder, child: Material(child: builder(context)))
+      },
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute<SavedMeal>(
+          settings: settings,
+          builder: (context) {
+            return Provider<Navigation>(builder: navigationBlocBuilder, child: Material(child: builder(context)));
+          }
+        ) ;
       },
       builder: (ctx, navigator) {
-        return NavigationProvider(builder: (_) => navigationBloc, child: DatabaseProvider(child: navigator, uuid: "", database: DatabaseType.memory, bloc: databaseBloc));
+        return Provider<Navigation>(builder: (_) => navigationBloc, child: DatabaseProvider(child: navigator, uuid: "", database: DatabaseType.memory, bloc: databaseBloc));
       },
     );
 }

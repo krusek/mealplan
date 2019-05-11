@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
+import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -36,11 +37,11 @@ class _SplashState extends State<Splash> {
     List<Future> futures = List();
 
     futures.add(Future.delayed(Duration(seconds: 1)));
-    futures.add(DatabaseProvider.of(context).loader(context));
+    futures.add(Provider.of<Database>(context).loader(context));
 
     Future.wait(futures).then((_) {
       if (context == null) { return; }
-      NavigationProvider.of(context).switchToHome();
+      Provider.of<Navigation>(context).switchToHome();
     });
   }
 }

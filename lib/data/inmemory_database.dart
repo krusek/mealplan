@@ -2,11 +2,11 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database_bloc.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MemoryDatabaseBloc extends DatabaseBloc {
+class MemoryDatabase extends Database {
   List<_MemoryActiveMeal> _activeMeals = [];
   List<SavedMeal> _savedMeals = [];
   List<ActiveIngredient> _extraItems = [];

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database_bloc.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/firestore_provider.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FirebaseDatabaseBloc extends DatabaseBloc {
+class FirebaseDatabase extends Database {
   FirestoreBloc firebase;
   String get savedMealsName => uuid.length > 0 ? "data/$uuid/saved_meals" : "saved_meals";
   String get activeMealsName => uuid.length > 0 ? "data/$uuid/active_meals" : "active_meals";
@@ -14,7 +14,7 @@ class FirebaseDatabaseBloc extends DatabaseBloc {
   String get extraIngredientsName => uuid.length > 0 ? "data/$uuid/extra_ingredients" : "extra_ingredents";
   String uuid = "";
 
-  FirebaseDatabaseBloc({this.uuid});
+  FirebaseDatabase({this.uuid});
 
   @override
   void activateMeal(SavedMeal meal) {

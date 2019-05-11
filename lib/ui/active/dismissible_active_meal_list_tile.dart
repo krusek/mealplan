@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
+import 'package:provider/provider.dart';
 
 class DismissibleActiveMealListTile extends StatelessWidget {
   const DismissibleActiveMealListTile({
@@ -12,7 +13,7 @@ class DismissibleActiveMealListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseProvider.of(context);
+    final database = Provider.of<Database>(context);
     return Dismissible(
       key: Key(activeMeal.id),
       onDismissed: (_) {

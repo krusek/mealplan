@@ -2,7 +2,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/model.dart';
 
-abstract class DatabaseBloc {
+abstract class Database {
   Stream<List<ActiveMeal>> get activeMealaStream;
   Stream<List<SavedMeal>> get savedMealsStream;
   Stream<List<ActiveIngredient>> get extraShoppingStream;

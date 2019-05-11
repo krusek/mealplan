@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/saved/mutable_ingredient_container.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateIngredientForm extends StatefulWidget {
@@ -15,17 +16,19 @@ class CreateIngredientForm extends StatefulWidget {
 }
 
 class CreateIngredientFormState extends State<CreateIngredientForm> with TickerProviderStateMixin {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey;
   final String id;
   final MutableIngredient ingredient = MutableIngredient();
 
-  CreateIngredientFormState(): this.id = Uuid().v1() {
+  CreateIngredientFormState({GlobalKey<FormState> formKey}): 
+  this.id = Uuid().v1(), 
+  this._formKey = formKey ?? GlobalKey<FormState>() {
     ingredient.id = id;
   }
 
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseProvider.of(context);
+    final database = Provider.of<Database>(context);
     return Form(
       key: _formKey,
       child: AnimatedSize(
@@ -45,7 +48,7 @@ class CreateIngredientFormState extends State<CreateIngredientForm> with TickerP
                 if (form.validate()) {
                   form.save();
                   final active = database.addExtraItem(ingredient);
-                  NavigationProvider.of(context).finishExtraItemDialog(ingredient: active);
+                  Provider.of<Navigation>(context).finishExtraItemDialog(ingredient: active);
                 }
               }
             ),
@@ -54,7 +57,7 @@ class CreateIngredientFormState extends State<CreateIngredientForm> with TickerP
               textColor: Colors.orange,
               child: Text("Cancel"),
               onPressed: () {
-                NavigationProvider.of(context).finishExtraItemDialog(ingredient: null);
+                Provider.of<Navigation>(context).finishExtraItemDialog(ingredient: null);
               }
             )
           ]

@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
+import 'package:provider/provider.dart';
 
 class SavedMealListTileWidget extends StatelessWidget {
   SavedMealListTileWidget({
@@ -15,7 +16,7 @@ class SavedMealListTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseProvider.of(context);
+    final database = Provider.of<Database>(context);
     return ListTile(
       title: Text(meal.name),
       onTap: () {
@@ -25,7 +26,7 @@ class SavedMealListTileWidget extends StatelessWidget {
         textColor: Theme.of(context).accentColor,
         child: Text("Edit Meal"),
         onPressed: () {
-          NavigationProvider.of(context).pushSavedMealEditor(meal: meal);
+          Provider.of<Navigation>(context).pushSavedMealEditor(meal: meal);
         }
       ),
     );

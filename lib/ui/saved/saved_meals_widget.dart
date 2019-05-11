@@ -1,13 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mealplan/data/database_provider.dart';
+import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/navigation/navigation_provider.dart';
 import 'package:mealplan/ui/active/active_meal_widget.dart';
 import 'package:mealplan/ui/active/dismissible_active_meal_list_tile.dart';
 import 'package:mealplan/ui/saved/saved_meal_list_tile_widget.dart';
 import 'package:mealplan/ui/util/safe_area_scroll_view.dart';
+import 'package:provider/provider.dart';
 
 class SavedMealsWidget extends StatelessWidget {
   @override
@@ -27,7 +28,7 @@ class SavedMealsWidget extends StatelessWidget {
     return [
       FlatButton(
         onPressed: () {
-          NavigationProvider.of(context).pushCreateSavedMeal();
+          Provider.of<Navigation>(context).pushCreateSavedMeal();
         },
         child: Text("Create", style: TextStyle(color: Colors.white),),
       ),
@@ -38,7 +39,7 @@ class SavedMealsWidget extends StatelessWidget {
 class SavedMealsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseProvider.of(context);
+    final database = Provider.of<Database>(context);
     return Column(
       children: [
         MealTitleWidget(title: "Saved Meals"),
@@ -69,7 +70,7 @@ class ActiveMealsWidget extends StatefulWidget {
 class ActiveMealsWidgetState extends State<ActiveMealsWidget> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final database = DatabaseProvider.of(context);
+    final database = Provider.of<Database>(context);
     return Column(
       children: [
         MealTitleWidget(title: "Active Meals"),
