@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
-import 'package:mealplan/navigation/navigation_provider.dart';
+import 'package:mealplan/navigation/navigation.dart';
 import 'package:mealplan/ui/saved/mutable_ingredient_container.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';

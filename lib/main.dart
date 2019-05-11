@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/firestore_database.dart';
-import 'package:mealplan/data/firestore_provider.dart';
+import 'package:mealplan/data/firestore_holder.dart';
 import 'package:mealplan/data/model.dart';
-import 'package:mealplan/navigation/navigation_provider.dart';
+import 'package:mealplan/navigation/navigation.dart';
 import 'package:mealplan/ui/active/active_meal_widget.dart';
 import 'package:mealplan/ui/extra_items/extra_shopping_items_widget.dart';
 import 'package:mealplan/ui/saved/create_meal_widget.dart';
@@ -43,11 +43,12 @@ class MyApp extends StatelessWidget {
         return null;
       },
       builder: (_, navigator) {
-        return FirestoreProvider( 
-          child: Provider<Database>(
-            builder: (context) => FirebaseDatabase(uuid: LK),
-            child: navigator,
-          ),
+        return MultiProvider(
+          providers: [
+            Provider<FirestoreHolder>.value(value: FirestoreHolder()),
+            Provider<Database>(builder: (_) => FirebaseDatabase(uuid: LK)),
+          ],
+          child: navigator
         );
       },
     );

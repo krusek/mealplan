@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mealplan/data/database.dart';
-import 'package:mealplan/navigation/navigation_provider.dart';
+import 'package:mealplan/navigation/navigation.dart';
 import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {

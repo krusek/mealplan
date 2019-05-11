@@ -1,5 +1,5 @@
 import 'package:mealplan/data/model.dart';
-import 'package:mealplan/navigation/navigation_provider.dart';
+import 'package:mealplan/navigation/navigation.dart';
 
 class MockNavigationBloc extends NavigationBloc {
   bool savedMealEditorPushed = false;

@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database.dart';
-import 'package:mealplan/data/firestore_provider.dart';
+import 'package:mealplan/data/firestore_holder.dart';
 import 'package:mealplan/data/model.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseDatabase extends Database {
-  FirestoreBloc firebase;
+  FirestoreHolder firebase;
   String get savedMealsName => uuid.length > 0 ? "data/$uuid/saved_meals" : "saved_meals";
   String get activeMealsName => uuid.length > 0 ? "data/$uuid/active_meals" : "active_meals";
   String get activeIngredientsName => uuid.length > 0 ? "data/$uuid/active_ingredients" : "active_ingredients";
@@ -70,7 +71,7 @@ class FirebaseDatabase extends Database {
       await preferences.setString("uuid", this.uuid);
     }
     print("uuid: $uuid");
-    this.firebase = FirestoreProvider.of(context);
+    this.firebase = Provider.of<FirestoreHolder>(context);
     final _ = await this.firebase.loader(context);
   }
 

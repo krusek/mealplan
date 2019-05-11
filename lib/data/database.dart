@@ -2,6 +2,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/model.dart';
 
+enum DatabaseType {
+  memory, firestore
+}
+
 abstract class Database {
   Stream<List<ActiveMeal>> get activeMealaStream;
   Stream<List<SavedMeal>> get savedMealsStream;

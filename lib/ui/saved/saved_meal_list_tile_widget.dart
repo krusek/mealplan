@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
-import 'package:mealplan/navigation/navigation_provider.dart';
+import 'package:mealplan/navigation/navigation.dart';
 import 'package:provider/provider.dart';
 
 class SavedMealListTileWidget extends StatelessWidget {
