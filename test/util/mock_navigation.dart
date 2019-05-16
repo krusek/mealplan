@@ -22,15 +22,18 @@ class MockNavigation extends Navigation {
     return null;
   }
 
+  SavedMeal expectedSavedMeal;
   @override
   Future<SavedMeal> pushCreateSavedMeal() {
     savedMealEditorPushed = true;
+    assert(expectedSavedMeal == null);
     return Future.value(null);
   }
 
   @override
   Future<SavedMeal> pushSavedMealEditor({SavedMeal meal}) {
     savedMealEditorPushed = true;
+    assert(meal == this.expectedSavedMeal);
     return null;
   }
 

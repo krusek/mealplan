@@ -31,13 +31,13 @@ MaterialApp buildWidget({
       ),
       color: Colors.blue,
       routes: {
-        "/": (context) => Provider<Navigation>(builder: navigationBuilder, child: Material(child: builder(context)))
+        "/": (context) => Provider<Navigation>(builder: navigationBuilder, child: Builder(builder: (ctx) => Material(child: builder(ctx))))
       },
       onGenerateRoute: (settings) {
         return MaterialPageRoute<SavedMeal>(
           settings: settings,
           builder: (context) {
-            return Provider<Navigation>(builder: navigationBuilder, child: Material(child: builder(context)));
+            return Provider<Navigation>(builder: navigationBuilder, child: Builder(builder: (ctx) => Material(child: builder(ctx))));
           }
         ) ;
       },

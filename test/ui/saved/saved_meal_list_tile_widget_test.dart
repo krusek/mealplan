@@ -29,6 +29,7 @@ void main() {
   testWidgets('Test saved meal editor pushed', (WidgetTester tester) async {
     await tester.pumpWidget(app);
     await tester.pumpAndSettle();
+    navigation.expectedSavedMeal = meal;
     expect(navigation.savedMealEditorPushed, false);
 
     await tester.tap(find.byType(FlatButton));
