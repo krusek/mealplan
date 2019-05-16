@@ -2,11 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/navigation/navigation.dart';
+import 'package:mealplan/ui/active/active_meals_widget.dart';
 import 'package:mealplan/ui/saved/saved_meals_list_widget.dart';
 import 'package:mealplan/ui/util/safe_area_scroll_view.dart';
 import 'package:provider/provider.dart';
-
-import 'active_meals_widget.dart';
 
 
 class SavedMealsWidget extends StatelessWidget {
