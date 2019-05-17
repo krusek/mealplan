@@ -26,7 +26,7 @@ class ExtraShoppingItemsWidgetState extends State<ExtraShoppingItemsWidget> with
         initialData: [],
         stream: database.extraShoppingStream,
         builder: (context, snapshot) {
-          if (snapshot.data == null) return Text("Loading");
+          if (snapshot.data.length == 0) return Text("Loading");
           return Column(
             children: snapshot.data.map((ingredient) {
               return ActiveIngredientTile(ingredient: ingredient);

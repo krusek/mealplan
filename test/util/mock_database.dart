@@ -45,9 +45,9 @@ class MockDatabase extends Database {
     // TODO: implement clearExtraList
   }
 
+  final extraShoppingSubject = BehaviorSubject<List<ActiveIngredient>>();
   @override
-  // TODO: implement extraShoppingStream
-  Stream<List<ActiveIngredient>> get extraShoppingStream => null;
+  Stream<List<ActiveIngredient>> get extraShoppingStream => extraShoppingSubject.stream;
 
   Map<String, List<ActiveIngredient>> activeIngredientMap = Map();
   @override
@@ -92,5 +92,6 @@ class MockDatabase extends Database {
   dispose() {
     _activeMealsSubject.close();
     _subscription.cancel();
+    extraShoppingSubject.close();
   }
 }

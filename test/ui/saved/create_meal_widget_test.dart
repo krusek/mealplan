@@ -3,9 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mealplan/data/model.dart';
 import 'package:mealplan/ui/saved/create_meal_form.dart';
 import 'package:mealplan/ui/saved/create_meal_widget.dart';
-import 'package:mealplan/ui/saved/mutable_ingredient_container.dart';
 import 'package:mealplan/ui/util/home_scaffold.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../util/setup.dart';
 
