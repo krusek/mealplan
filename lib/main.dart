@@ -125,7 +125,7 @@ class MyHomePage extends StatelessWidget {
           ),
           StreamBuilder(
             initialData: [],
-            stream: database.activeMealaStream,
+            stream: database.activeMealsStream,
             builder: (context, data) {
               if (data.data == null) return Text("Loading");
               if (data.data.length == 0) {

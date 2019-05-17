@@ -7,7 +7,7 @@ void main() {
         final subject = BehaviorSubject<int>();
     final stream = subject.stream;
 
-    // final stream = databaseBloc.activeMealaStream;
+    // final stream = databaseBloc.activeMealsStream;
     //await tester.tap(find.byType(ListTile));
     // databaseBloc.activateMeal(meal);
     subject.add(4);

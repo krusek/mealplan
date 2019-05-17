@@ -7,7 +7,7 @@ enum DatabaseType {
 }
 
 abstract class Database {
-  Stream<List<ActiveMeal>> get activeMealaStream;
+  Stream<List<ActiveMeal>> get activeMealsStream;
   Stream<List<SavedMeal>> get savedMealsStream;
   Stream<List<ActiveIngredient>> get extraShoppingStream;
   Stream<List<ActiveIngredient>> ingredientsStream(ActiveMeal meal);

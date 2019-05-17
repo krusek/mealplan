@@ -26,7 +26,7 @@ class ActiveMealsWidgetState extends State<ActiveMealsWidget> with TickerProvide
           vsync: this,
           child: StreamBuilder<List<ActiveMeal>>(
             initialData: [],
-            stream: database.activeMealaStream,
+            stream: database.activeMealsStream,
             builder: (context, snapshot) {
               final list = snapshot.data;
               if (list != null && list.length > 0) {
@@ -44,7 +44,7 @@ class ActiveMealsWidgetState extends State<ActiveMealsWidget> with TickerProvide
   Widget _mealsColumn(BuildContext context, List<ActiveMeal> meals) {
     return Column(
       children: meals.map((meal) {
-        return new DismissibleActiveMealListTile(activeMeal: meal);
+        return DismissibleActiveMealListTile(activeMeal: meal);
       }).toList()
     );
   }

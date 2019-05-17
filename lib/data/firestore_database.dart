@@ -37,7 +37,7 @@ class FirebaseDatabase extends Database {
   }
 
   @override
-  Stream<List<ActiveMeal>> get activeMealaStream {
+  Stream<List<ActiveMeal>> get activeMealsStream {
     return _activeMealsCollection.snapshots().map((snapshot) {
       return snapshot.documents.map((document) {
         Map<String,dynamic> json = document.data;

@@ -4,17 +4,30 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:mealplan/data/database.dart';
 import 'package:mealplan/data/model.dart';
+import 'package:rxdart/rxdart.dart';
 
 class MockDatabase extends Database {
+  StreamSubscription _subscription;
+  MockDatabase() {
+    _subscription = activeMealsStream.listen((list) {
+      lastActiveMeals = list;
+    });
+  }
+
   final List<SavedMeal> activatedMeals = [];
   @override
   void activateMeal(SavedMeal meal) {
     activatedMeals.add(meal);
+    final last = List.of(lastActiveMeals);
+    last.add(ActiveMeal(meal));
+    lastActiveMeals = last;
+    _activeMealsSubject.add(last);
   }
 
+  List<ActiveMeal> lastActiveMeals = [];
+  final _activeMealsSubject = BehaviorSubject<List<ActiveMeal>>(seedValue: []);
   @override
-  // TODO: implement activeMealaStream
-  Stream<List<ActiveMeal>> get activeMealaStream => null;
+  Stream<List<ActiveMeal>> get activeMealsStream => _activeMealsSubject.stream;
 
   @override
   ActiveIngredient addExtraItem(MutableIngredient ingredient) {
@@ -76,4 +89,8 @@ class MockDatabase extends Database {
     toggles[id] = value;
   }
 
+  dispose() {
+    _activeMealsSubject.close();
+    _subscription.cancel();
+  }
 }

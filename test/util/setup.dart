@@ -50,6 +50,12 @@ MaterialApp buildWidget({
     );
 }
 
+List<SavedMeal> randomSavedMeals({int mealCount = 1, int ingredientCount = 0}) {
+  return Iterable.generate(mealCount).map((_) {
+    return randomSavedMeal(ingredientCount: ingredientCount);
+  }).toList();
+}
+
 SavedMeal randomSavedMeal({int ingredientCount = 0}) {
   final ingredients = Iterable.generate(ingredientCount).map((_) {
     return randomIngredient();

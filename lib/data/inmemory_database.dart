@@ -27,7 +27,7 @@ class MemoryDatabase extends Database {
   final _savedMealsChanges = BehaviorSubject<List<SavedMeal>>();
   final _extraItemsChanges = BehaviorSubject<List<ActiveIngredient>>();
 
-  Stream<List<_MemoryActiveMeal>> get activeMealaStream => _activeMealsChanges.stream;
+  Stream<List<_MemoryActiveMeal>> get activeMealsStream => _activeMealsChanges.stream;
   Stream<List<SavedMeal>> get savedMealsStream => _savedMealsChanges.stream;
 
   Stream<ActiveIngredient> ingredientStream(ActiveIngredient ingredient) {
@@ -70,7 +70,7 @@ class MemoryDatabase extends Database {
 
   @override
   Stream<List<ActiveIngredient>> ingredientsStream(ActiveMeal meal) {
-    return activeMealaStream.map((list) {
+    return activeMealsStream.map((list) {
       for (_MemoryActiveMeal m in list) {
         if (m.id == meal.id) { return m._ingredients; }
       }
