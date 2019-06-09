@@ -61,9 +61,11 @@ class Ingredient extends IngredientBase {
 
   Ingredient({this.name = "", this.requiredAmount = "", this.unit = ""});
   Ingredient.fromJson(Map<String,dynamic> json)
-  : name = json['name'],
-    requiredAmount = json['required_amount'],
-    unit = json['unit'];
+  : this(
+    name: json['name'], 
+    requiredAmount: json['required_amount'],
+    unit: json['unit']
+  );
 
   static List<Map<String, dynamic>> toJsonList(List<IngredientBase> ingredients) {
     return ingredients.map((ingredient) => ingredient.toJson()).toList();
