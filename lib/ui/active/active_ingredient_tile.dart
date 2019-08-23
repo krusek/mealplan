@@ -30,6 +30,13 @@ class ActiveIngredientTile extends StatelessWidget {
             onChanged: (value){
               database.toggle(id: ingredient.id, value: value);
             },
+          ),
+          trailing: SpecialCheckbox(
+            value: ingredient.acquired, 
+            onChanged: (value){
+              database.toggle(id: ingredient.id, value: value);
+            },
+
           )
         );
       },
@@ -42,6 +49,36 @@ class ActiveIngredientTile extends StatelessWidget {
         style: TextStyle(
           decoration: ingredient.acquired ? TextDecoration.lineThrough : null,
         ),
+    );
+  }
+
+}
+
+class SpecialCheckbox extends StatelessWidget {
+  final bool value;
+  final Function(bool) onChanged;
+  SpecialCheckbox({this.value, this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    final child = Center( 
+      child: Container(
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.blue.withAlpha(125),
+        border: Border.all(width: 2, color: value ? Colors.blue : Colors.black45,),
+      ),
+    ));
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        border: Border.all(width: 2, color: value ? Colors.blue : Colors.black45,),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: value ? child : null,
     );
   }
 

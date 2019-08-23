@@ -4,10 +4,14 @@ import 'package:mealplan/navigation/navigation.dart';
 class MockNavigation extends Navigation {
   bool savedMealEditorPushed = false;
 
+  ActiveIngredient expectedExtraItem;
+  bool finishedExtraItemDialog = false;
   @override
   bool finishExtraItemDialog({ActiveIngredient ingredient}) {
-    // TODO: implement finishExtraItemDialog
-    return null;
+    assert(finishedExtraItemDialog == false);
+    finishedExtraItemDialog = true;
+    assert(expectedExtraItem == ingredient);
+    return true;
   }
 
   @override
